@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "565415280804",
+    "project_id": "remote-jobs-9c0da",
+    "storage_bucket": "remote-jobs-9c0da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565415280804:android:732fe80635433d99abe631",
+        "android_client_info": {
+          "package_name": "com.remotejobs.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcKIGnU8oihbU3lCMLejdxZTHrfMUVpxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
