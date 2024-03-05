@@ -25,10 +25,15 @@ class JobViewModel : ViewModel() {
 
                 val jobList = mutableListOf<Job>()
                 snapshot?.documents?.forEach { document ->
+
                     val title = document.getString("title") ?: ""
                     val type = document.getString("type") ?: ""
+                    val description = document.getString("description") ?: ""
+                    val location = document.getString("location") ?: ""
+                    val company = document.getString("company") ?: ""
+                    val companyLogo = document.getString("companyLogo") ?: ""
 
-                    jobList.add(Job(title, type))
+                    jobList.add(Job(title, type, description, location, company, companyLogo))
                 }
 
                 _jobs.value = jobList
