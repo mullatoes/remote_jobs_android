@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.remotejobs.android.ui.components.TwoRowImagesComponent
+import com.remotejobs.android.ui.screens.LoginScreen
 import com.remotejobs.android.ui.screens.WelcomeScreen
 import com.remotejobs.android.ui.theme.RemoteJobsTheme
 import com.remotejobs.android.viewmodel.JobViewModel
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val viewModel: JobViewModel = viewModel()
                   // JobsScreen(viewModel = viewModel)
-                   WelcomeScreen()
+                  // WelcomeScreen()
+                    LoginScreen()
                 }
             }
         }
