@@ -1,6 +1,5 @@
 package com.remotejobs.android.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.remotejobs.android.model.Job
-import com.remotejobs.android.ui.screens.JobsScreen
 
 @Composable
 fun JobCardComponent(image: String, title: String, type: String) {

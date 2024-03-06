@@ -8,6 +8,7 @@ import com.google.firebase.firestore.firestore
 import com.remotejobs.android.model.Job
 
 class JobViewModel : ViewModel() {
+
     private var firestore = Firebase.firestore
 
     private val _jobs = MutableLiveData<List<Job>>()
