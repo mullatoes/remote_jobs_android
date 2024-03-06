@@ -13,13 +13,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.CreateAnAccountComponent
 import com.remotejobs.android.ui.components.TwoRowImagesComponent
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavController) {
 
     Column(
         modifier = Modifier.padding(5.dp)
@@ -90,7 +91,7 @@ fun WelcomeScreen() {
             modifier = Modifier
                 .height(30.dp)
         )
-        ButtonComponent()
+        ButtonComponent(buttonClick = { navController.navigate("login") })
         Spacer(
             modifier = Modifier
                 .height(30.dp)
@@ -98,13 +99,4 @@ fun WelcomeScreen() {
         CreateAnAccountComponent()
     }
 
-}
-
-
-@Preview(
-    showSystemUi = true, showBackground = true
-)
-@Composable
-fun WelcomeScreenPreview() {
-    WelcomeScreen()
 }

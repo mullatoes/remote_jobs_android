@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonComponent() {
+fun ButtonComponent(buttonClick: () -> Unit) {
     Button(
-        onClick = { },
-      //  colors = ButtonDefaults.buttonColors(Color.Blue),
+        onClick = buttonClick,
+        //  colors = ButtonDefaults.buttonColors(Color.Blue),
         modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth(),
