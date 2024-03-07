@@ -18,16 +18,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoginPasswordComponent(
     label: String,
-    placeholder: String
+    placeholder: String,
+    password: String,
+    onPasswordChange: (String) -> Unit
 ) {
-    var text by remember {
-        mutableStateOf("")
-    }
     OutlinedTextField(
-        value = text,
-        onValueChange = { newText ->
-            text = newText
-        },
+        value = password,
+        onValueChange = onPasswordChange,
         label = {
             Text(text = label)
         },

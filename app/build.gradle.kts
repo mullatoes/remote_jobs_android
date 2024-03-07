@@ -68,7 +68,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
     /* firebase firestore */
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-firestore")
@@ -77,7 +76,6 @@ dependencies {
     /* viewmodel compose */
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-
     /* coil */
     implementation("io.coil-kt:coil-compose:2.6.0")
 
@@ -85,4 +83,7 @@ dependencies {
     val nav_version = "2.7.7"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
 }

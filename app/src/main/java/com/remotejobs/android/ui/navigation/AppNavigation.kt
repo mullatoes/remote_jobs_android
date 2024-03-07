@@ -1,12 +1,15 @@
 package com.remotejobs.android.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.remotejobs.android.ui.screens.LoginScreen
+import com.remotejobs.android.ui.screens.JobsScreen
+import com.remotejobs.android.ui.screens.SignInScreen
 import com.remotejobs.android.ui.screens.RegisterScreen
 import com.remotejobs.android.ui.screens.WelcomeScreen
+import com.remotejobs.android.viewmodel.JobViewModel
 
 @Composable
 fun AppNavigation() {
@@ -17,11 +20,15 @@ fun AppNavigation() {
         composable("welcome") {
             WelcomeScreen(navController)
         }
-        composable("register") {
+        composable("register_screen") {
             RegisterScreen(navController)
         }
-        composable("login") {
-            LoginScreen(navController)
+        composable("login_screen") {
+            SignInScreen(navController)
+        }
+        composable("jobs_screen") {
+            val viewModel: JobViewModel = viewModel()
+            JobsScreen(viewModel = viewModel)
         }
     }
 }

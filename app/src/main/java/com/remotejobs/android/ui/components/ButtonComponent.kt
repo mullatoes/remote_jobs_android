@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonComponent(buttonClick: () -> Unit) {
+fun ButtonComponent(buttonClick: () -> Unit, text: String) {
     Button(
         onClick = buttonClick,
         //  colors = ButtonDefaults.buttonColors(Color.Blue),
@@ -19,6 +19,6 @@ fun ButtonComponent(buttonClick: () -> Unit) {
             .fillMaxWidth(),
         shape = CutCornerShape(5)
     ) {
-        Text(text = "Sign In")
+        Text(text = text)
     }
 }

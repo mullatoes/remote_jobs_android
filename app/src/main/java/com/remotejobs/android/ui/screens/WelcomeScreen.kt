@@ -91,12 +91,12 @@ fun WelcomeScreen(navController: NavController) {
             modifier = Modifier
                 .height(30.dp)
         )
-        ButtonComponent(buttonClick = { navController.navigate("login") })
+        ButtonComponent(buttonClick = { navController.navigate("login_screen") }, text = "Sign In")
         Spacer(
             modifier = Modifier
                 .height(30.dp)
         )
-        CreateAnAccountComponent()
+        CreateAnAccountComponent(onClick = { navController.navigate("register_screen") }, text = "Create an account")
     }
 
 }

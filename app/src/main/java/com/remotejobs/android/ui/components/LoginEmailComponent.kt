@@ -18,16 +18,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoginEmailComponent(
     label: String,
-    placeholder: String
+    placeholder: String,
+    email: String,
+    onEmailChange: (String) -> Unit
 ) {
-    var text by remember {
-        mutableStateOf("")
-    }
     OutlinedTextField(
-        value = text,
-        onValueChange = { newText ->
-            text = newText
-        },
+        value = email,
+        onValueChange = onEmailChange,
         label = {
             Text(text = label)
         },

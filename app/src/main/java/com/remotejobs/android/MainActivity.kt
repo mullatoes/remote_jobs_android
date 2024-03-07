@@ -7,12 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.remotejobs.android.ui.components.TwoRowImagesComponent
-import com.remotejobs.android.ui.screens.LoginScreen
-import com.remotejobs.android.ui.screens.WelcomeScreen
+import com.remotejobs.android.ui.navigation.AppNavigation
 import com.remotejobs.android.ui.theme.RemoteJobsTheme
-import com.remotejobs.android.viewmodel.JobViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: JobViewModel = viewModel()
-                  // JobsScreen(viewModel = viewModel)
-                  // WelcomeScreen()
-                    LoginScreen()
+                    AppNavigation()
                 }
             }
         }
