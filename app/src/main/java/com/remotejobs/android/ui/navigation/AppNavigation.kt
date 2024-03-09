@@ -1,5 +1,7 @@
 package com.remotejobs.android.ui.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -11,12 +13,13 @@ import com.remotejobs.android.ui.screens.RegisterScreen
 import com.remotejobs.android.ui.screens.WelcomeScreen
 import com.remotejobs.android.viewmodel.JobViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "welcome") {
+    NavHost(navController = navController, startDestination = "jobs_screen") {
         composable("welcome") {
             WelcomeScreen(navController)
         }
