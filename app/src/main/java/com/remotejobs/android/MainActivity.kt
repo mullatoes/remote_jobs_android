@@ -30,10 +30,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RemoteJobsTheme {
-                Scaffold(
-                    bottomBar = { BottomNavigation() }
-                ) {
+//                Scaffold(
+//                    bottomBar = { BottomNavigation() }
+//                ) {
+//
+//                }
 
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavigation()
                 }
             }
         }

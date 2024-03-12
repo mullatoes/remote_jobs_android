@@ -19,8 +19,8 @@ fun AppNavigation() {
 
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "jobs_screen") {
-        composable("welcome") {
+    NavHost(navController = navController, startDestination = "welcome_screen") {
+        composable("welcome_screen") {
             WelcomeScreen(navController)
         }
         composable("register_screen") {
