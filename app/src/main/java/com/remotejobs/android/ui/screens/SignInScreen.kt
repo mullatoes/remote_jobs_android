@@ -37,6 +37,10 @@ fun SignInScreen(navController: NavController) {
         mutableStateOf("")
     }
 
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
     Column {
         Spacer(
             modifier = Modifier
@@ -91,7 +95,7 @@ fun signInWithEmailAndPassword(navController: NavController, email: String, pass
             if (task.isSuccessful) {
                 Log.d(TAG, "signInWithEmail:success")
                 val user = Firebase.auth.currentUser
-                navController.navigate("job_screen")
+                navController.navigate("jobs_screen")
             } else {
 
                 Log.w(TAG, "signInWithEmail:failure", task.exception)
