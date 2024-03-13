@@ -117,7 +117,8 @@ fun JobCardComponent(
 
     if (isJobDetailsExpanded) {
         JobDetailsBottomSheet(
-            company, image,
+            company,
+            image,
             title,
             type,
             timePosted

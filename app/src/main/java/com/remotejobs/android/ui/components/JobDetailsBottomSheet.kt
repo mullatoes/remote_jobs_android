@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobDetailsBottomSheet(
-    jobDescription: String,
+    company: String,
     image: String,
     title: String,
     type: String,
@@ -36,12 +36,11 @@ fun JobDetailsBottomSheet(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            BottomSheetItem() {
-
+            BottomSheetItem(company, title, type, timePosted) {
                 onDismiss()
             }
 
-            }
-
         }
+
+    }
 }

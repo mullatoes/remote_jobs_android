@@ -51,13 +51,13 @@ fun JobsScreen(viewModel: JobViewModel) {
     val user = auth.currentUser
 
     val jobs by viewModel.jobs.observeAsState(initial = emptyList())
-    val allJobs = jobs.toMutableList() // a copy of all jobs
+    val allJobs = jobs.toMutableList()
 
     val searchQuery = remember {
         mutableStateOf("")
     }
 
-    val categories = listOf("Design", "Customer Service", "Sales", "Development")
+    val categories = listOf("SQL", "React", "iOS", "Android", "Backend","Next js")
 
     val selectedCategory = remember { mutableStateOf("") }
 

@@ -82,11 +82,14 @@ dependencies {
 
     /* navigation */
     val nav_version = "2.7.7"
+    val compose_version = "2.6.2"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
 
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
+
+    implementation("androidx.compose.material:material-icons-extended:1.6.3")
 
 }
