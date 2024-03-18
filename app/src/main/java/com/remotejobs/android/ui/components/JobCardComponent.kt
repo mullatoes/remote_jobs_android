@@ -39,11 +39,11 @@ import java.time.temporal.ChronoUnit
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JobCardComponent(
+    job: Job,
     company: String,
     image: String,
     title: String,
     type: String,
-    onClick: () -> Unit,
     timePosted: LocalDateTime
 ) {
 
@@ -102,7 +102,7 @@ fun JobCardComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(onClick = {
-                onClick()
+                //onClick()
                 isJobDetailsExpanded = !isJobDetailsExpanded
 
             }) {
@@ -117,6 +117,7 @@ fun JobCardComponent(
 
     if (isJobDetailsExpanded) {
         JobDetailsBottomSheet(
+            job,
             company,
             image,
             title,
@@ -138,8 +139,8 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
         difference < 60 -> "$difference mins ago"
         difference < 1440 -> "${difference / 60} hrs ago"
         difference < 10080 -> "${difference / 1440} days ago"
-        difference < 43800 -> "${difference / 10080} weeks ago"
-        difference < 525600 -> "${difference / 43800} months ago"
+        difference < 43800 -> "${difference / 10080} week ago"
+        difference < 525600 -> "${difference / 43800} month ago"
         else -> "${difference / 525600} years ago"
     }
 }
@@ -153,14 +154,12 @@ fun JobCardList(jobs: List<Job>) {
         items(jobs) { job ->
             Spacer(modifier = Modifier.height(8.dp))
             JobCardComponent(
+                job,
                 company = job.company,
                 image = job.companyLogo,
                 title = job.title,
                 type = job.type,
-                onClick = {
-                    println("Clicked")
-                },
-                timePosted = job.timePosted
+                timePosted = job.timePosted,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Divider(color = Color.Black, thickness = 0.5.dp)

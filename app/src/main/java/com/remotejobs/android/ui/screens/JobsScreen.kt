@@ -68,7 +68,6 @@ fun JobsScreen(viewModel: JobViewModel) {
             job.title.contains(searchQuery.value, ignoreCase = true) ||
                     job.type.contains(searchQuery.value, ignoreCase = true) ||
                     job.description.contains(searchQuery.value, ignoreCase = true) ||
-                    job.location.contains(searchQuery.value, ignoreCase = true) ||
                     job.company.contains(searchQuery.value, ignoreCase = true)
         }
     } else {

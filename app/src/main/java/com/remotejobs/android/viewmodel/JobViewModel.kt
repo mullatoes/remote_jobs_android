@@ -38,10 +38,23 @@ class JobViewModel : ViewModel() {
                     val title = document.getString("title") ?: ""
                     val type = document.getString("type") ?: ""
                     val description = document.getString("description") ?: ""
-                    val location = document.getString("location") ?: ""
                     val company = document.getString("company") ?: ""
                     val companyLogo = document.getString("companyLogo") ?: ""
                     val timestamp: Timestamp? = document.getTimestamp("timePosted")
+                    val skills = document.get("skills") as? ArrayList<String>
+                    val payScaleMin = document.getLong("payScaleMin")?.toInt()
+                    val payScaleMax = document.getLong("payScaleMax")?.toInt()
+                    val views = document.getLong("views")?.toInt()
+                    val applications = document.getLong("applications")?.toInt()
+                    val noOfEmployeesLowBound = document.getLong("noOfEmployeesLowBound")?.toInt()
+                    val noOfEmployeesHighBound = document.getLong("noOfEmployeesHighBound")?.toInt()
+                    val companyType = document.getString("companyType") ?: ""
+                    val companyCity = document.getString("companyCity") ?: ""
+                    val companyCountry = document.getString("companyCountry") ?: ""
+                    val responsibilities = document.get("responsibilities") as? ArrayList<String>
+                    val niceToHaveSkills = document.get("niceToHaveSkills") as? ArrayList<String>
+                    val experienceLevel = document.getString("experienceLevel") ?: ""
+                    val duration = document.getString("duration") ?: ""
 
                     val datePosted: Date? = timestamp?.toDate()
 
@@ -55,10 +68,23 @@ class JobViewModel : ViewModel() {
                             title,
                             type,
                             description,
-                            location,
                             company,
                             companyLogo,
-                            timePosted
+                            timePosted,
+                            skills,
+                            payScaleMin,
+                            payScaleMax,
+                            views,
+                            applications,
+                            noOfEmployeesLowBound,
+                            noOfEmployeesHighBound,
+                            companyType,
+                            companyCity,
+                            companyCountry,
+                            responsibilities,
+                            niceToHaveSkills,
+                            experienceLevel,
+                            duration
                         )
                     )
                 }

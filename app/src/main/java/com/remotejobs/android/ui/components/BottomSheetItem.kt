@@ -5,31 +5,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.AddTask
 import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.material.icons.rounded.RemoveRedEye
 import androidx.compose.material.icons.rounded.ShoppingBag
-import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material.icons.rounded.TaskAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.remotejobs.android.ui.theme.BottomNavColor
+import com.remotejobs.android.model.Job
 import java.time.LocalDateTime
 
 @Composable
 fun BottomSheetItem(
-    company: String,
-    title: String,
-    type: String,
-    timePosted: LocalDateTime,
+    job: Job,
     onClick: () -> Unit
 ) {
     Column(
@@ -41,7 +35,7 @@ fun BottomSheetItem(
         Row(
         ) {
             Text(
-                text = "SQL Developer", modifier = Modifier
+                text = job.title, modifier = Modifier
                     .padding(horizontal = 5.dp, vertical = 3.dp)
             )
 
@@ -56,7 +50,7 @@ fun BottomSheetItem(
                     .padding(horizontal = 5.dp, vertical = 3.dp)
             )
             Text(
-                text = "United States",
+                text = job.company,
                 fontSize = 10.sp,
                 modifier = Modifier
                     .padding(horizontal = 5.dp, vertical = 3.dp)
