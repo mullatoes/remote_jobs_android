@@ -11,18 +11,15 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.remotejobs.android.model.Job
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobDetailsBottomSheet(
     job: Job,
-    company: String,
-    image: String,
-    title: String,
-    type: String,
-    timePosted: LocalDateTime,
+    navController: NavController,
     onDismiss: () -> Unit
 ) {
 
@@ -38,7 +35,7 @@ fun JobDetailsBottomSheet(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
-            BottomSheetItem(job) {
+            BottomSheetItem(job, navController) {
                 onDismiss()
             }
 

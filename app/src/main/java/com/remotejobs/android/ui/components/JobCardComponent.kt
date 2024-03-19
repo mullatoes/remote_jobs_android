@@ -31,6 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.remotejobs.android.model.Job
 import java.time.LocalDateTime
@@ -39,15 +41,10 @@ import java.time.temporal.ChronoUnit
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JobCardComponent(
-    job: Job,
-    company: String,
-    image: String,
-    title: String,
-    type: String,
-    timePosted: LocalDateTime
+    job: Job, navController: NavController,
 ) {
 
-    val timeAgo = getTimeAgo(timePosted)
+    val timeAgo = getTimeAgo(job.timePosted)
     var isJobDetailsExpanded by remember { mutableStateOf(false) }
 
     Row(
@@ -63,7 +60,7 @@ fun JobCardComponent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 AsyncImage(
-                    model = image,
+                    model = job.companyLogo,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -75,7 +72,7 @@ fun JobCardComponent(
                         .height(16.dp)
                 )
                 OutlinedButton(onClick = { }) {
-                    Text(type)
+                    Text(job.type)
                 }
             }
 
@@ -83,7 +80,7 @@ fun JobCardComponent(
 
             Column {
                 Text(
-                    text = title,
+                    text = job.title,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -92,7 +89,7 @@ fun JobCardComponent(
                         .height(10.dp)
                 )
                 Text(
-                    text = company,
+                    text = job.company,
                     fontSize = 10.sp
                 )
             }
@@ -102,7 +99,6 @@ fun JobCardComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(onClick = {
-                //onClick()
                 isJobDetailsExpanded = !isJobDetailsExpanded
 
             }) {
@@ -117,12 +113,7 @@ fun JobCardComponent(
 
     if (isJobDetailsExpanded) {
         JobDetailsBottomSheet(
-            job,
-            company,
-            image,
-            title,
-            type,
-            timePosted
+            job, navController
         ) {
             isJobDetailsExpanded = !isJobDetailsExpanded
         }
@@ -147,19 +138,14 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobCardList(jobs: List<Job>) {
+fun JobCardList(jobs: List<Job>,  navController: NavController,) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(jobs) { job ->
             Spacer(modifier = Modifier.height(8.dp))
             JobCardComponent(
-                job,
-                company = job.company,
-                image = job.companyLogo,
-                title = job.title,
-                type = job.type,
-                timePosted = job.timePosted,
+                job, navController
             )
             Spacer(modifier = Modifier.height(8.dp))
             Divider(color = Color.Black, thickness = 0.5.dp)

@@ -26,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -167,8 +169,7 @@ fun BottomNavBar() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Home.screen) {
-                val viewModel: JobViewModel = viewModel()
-                JobsScreen(viewModel = viewModel)
+                JobsScreen()
             }
             composable(Screen.Saved.screen) {
                 SavedJobsScreen()
