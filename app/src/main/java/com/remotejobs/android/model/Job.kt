@@ -1,7 +1,10 @@
 package com.remotejobs.android.model
 
+import android.os.Parcelable
 import java.time.LocalDateTime
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Job(
     val title: String, //e.g SQL Developer
     val type: String, // remote onsite
@@ -23,4 +26,4 @@ data class Job(
     val niceToHaveSkills: ArrayList<String>?,
     val experienceLevel: String,
     val duration: String,
-)
+) : Parcelable

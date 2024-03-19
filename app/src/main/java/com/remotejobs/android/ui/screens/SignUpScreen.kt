@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -26,10 +25,9 @@ import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
-import com.remotejobs.android.viewmodel.SignUpViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController) {
 
     var email by remember {
         mutableStateOf("")

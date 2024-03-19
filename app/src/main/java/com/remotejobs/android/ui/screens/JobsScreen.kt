@@ -42,9 +42,7 @@ import com.remotejobs.android.viewmodel.JobViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobsScreen() {
-
-    val navController = rememberNavController()
+fun JobsScreen(navController: NavController) {
 
     val viewModel: JobViewModel = viewModel()
 

@@ -11,11 +11,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.remotejobs.android.ui.navigation.AppNavigation
-import com.remotejobs.android.ui.navigation.MyNavigation
+import com.remotejobs.android.ui.navigation.Navigation
 import com.remotejobs.android.ui.theme.RemoteJobsTheme
-import com.remotejobs.android.viewmodel.JobViewModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -30,8 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   // AppNavigation()
-                    MyNavigation()
+                    Navigation()
                 }
             }
         }

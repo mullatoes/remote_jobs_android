@@ -42,7 +42,7 @@ import com.remotejobs.android.viewmodel.JobViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(navController: NavController) {
     val navigationController = rememberNavController()
 
     val context = LocalContext.current.applicationContext
@@ -169,7 +169,7 @@ fun BottomNavBar() {
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Home.screen) {
-                JobsScreen()
+                JobsScreen(navController)
             }
             composable(Screen.Saved.screen) {
                 SavedJobsScreen()
@@ -178,7 +178,7 @@ fun BottomNavBar() {
                 AppliedJobsScreen()
             }
             composable(Screen.Profile.screen) {
-               ProfileScreen()
+                ProfileScreen()
             }
 
         }
