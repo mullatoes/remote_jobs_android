@@ -11,7 +11,7 @@ data class Job(
     val description: String, // About job
     val company: String, // Google
     val companyLogo: String, //www.logo.com
-    val timePosted: LocalDateTime,
+    val timePosted: LocalDateTime?,
     val skills: ArrayList<String>?, //iOS, iOS Development
     val payScaleMin: Int?, //100
     val payScaleMax: Int?, // 154

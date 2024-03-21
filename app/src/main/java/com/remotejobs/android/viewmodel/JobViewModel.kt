@@ -58,9 +58,7 @@ class JobViewModel : ViewModel() {
 
                     val datePosted: Date? = timestamp?.toDate()
 
-                    val timePosted: LocalDateTime = datePosted.let {
-                        convertDateToLocalDateTime(it!!)
-                    }
+                    val timePosted = datePosted?.let { convertDateToLocalDateTime(it) }
 
 
                     jobList.add(

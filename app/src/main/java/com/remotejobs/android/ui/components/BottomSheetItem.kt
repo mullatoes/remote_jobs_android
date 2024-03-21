@@ -3,6 +3,7 @@ package com.remotejobs.android.ui.components
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.AddTask
@@ -19,7 +22,9 @@ import androidx.compose.material.icons.rounded.RemoveRedEye
 import androidx.compose.material.icons.rounded.ShoppingBag
 import androidx.compose.material.icons.rounded.TaskAlt
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +33,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,13 +42,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.remotejobs.android.R
 import com.remotejobs.android.model.Job
 import com.remotejobs.android.ui.navigation.Details
 
 @Composable
 fun BottomSheetItem(
     job: Job,
-    navController: NavController,
     onClick: () -> Unit
 ) {
 
@@ -60,15 +67,20 @@ fun BottomSheetItem(
                 text = job.title,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
             )
 
-            Icon(Icons.Default.Share, contentDescription = null, tint = Color.Black)
+            Icon(
+                Icons.Default.Share,
+                contentDescription = null,
+                tint = Color.Black,
+            )
         }
+
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -76,251 +88,219 @@ fun BottomSheetItem(
             Text(
                 text = job.company,
                 fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = job.companyCity,
                 fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+
+                )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = job.companyCountry,
                 fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
-                text = job.applications.toString(),
+                text = "${job.applications.toString()} applications",
                 fontSize = 15.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
             )
         }
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row {
-            Icon(
-                Icons.Rounded.AttachMoney, contentDescription = null, tint = Color.Black,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                        vertical = 5.dp
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.pay),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = "Pay: ",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = "${job.payScaleMin}K - ${job.payScaleMax}K",
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.type,
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.duration,
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.experienceLevel,
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
             )
         }
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row {
-            Icon(
-                Icons.Rounded.ShoppingBag, contentDescription = null, tint = Color.Black,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                        vertical = 5.dp
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.companysize),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = "Company Size: ",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = "${job.noOfEmployeesLowBound} - ${job.noOfEmployeesHighBound} employees",
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+            )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.companyType,
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
-            )
+
+                )
         }
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row {
-            Icon(
-                Icons.Rounded.TaskAlt, contentDescription = null, tint = Color.Black,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                        vertical = 5.dp
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.skills),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = "Skills: ",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
             )
-            job.skills?.get(0)?.let {
-                Text(
-                    text = it,
-                    fontSize = 13.sp,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 5.dp
-                        )
-                )
-            }
-            job.skills?.get(1)?.let {
-                Text(
-                    text = it,
-                    fontSize = 13.sp,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 5.dp
-                        )
-                )
-            }
-            job.skills?.get(2)?.let {
-                Text(
-                    text = it,
-                    fontSize = 13.sp,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 10.dp,
-                            vertical = 5.dp
-                        )
-                )
-            }
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
+            )
+            SkillsItemsList(skills = job.skills)
 
         }
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row {
-            Icon(
-                Icons.Rounded.RemoveRedEye, contentDescription = null, tint = Color.Black,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                        vertical = 5.dp
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.eyes),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = "Views: ",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+
+                )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.views.toString(),
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
-            )
+
+                )
 
         }
+        Spacer(
+            modifier =
+            Modifier
+                .height(10.dp)
+        )
 
         Row {
-            Icon(
-                Icons.Rounded.AddTask, contentDescription = null, tint = Color.Black,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 8.dp,
-                        vertical = 5.dp
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.applications),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(
+                modifier =
+                Modifier.width(10.dp)
             )
             Text(
                 text = "Applications: ",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
+
+                )
+            Spacer(
+                modifier =
+                Modifier.width(5.dp)
             )
             Text(
                 text = job.applications.toString(),
                 fontSize = 13.sp,
-                modifier = Modifier
-                    .padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
-            )
+
+                )
 
         }
 
@@ -330,29 +310,80 @@ fun BottomSheetItem(
                 .height(20.dp)
         )
 
+        Divider(color = Color.Black, thickness = 3.dp)
+
+        Spacer(
+            modifier =
+            Modifier
+                .height(30.dp)
+        )
+
+        Text(
+            text = "About the job",
+            style = MaterialTheme.typography.bodyLarge,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = "Job Description",
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = AnnotatedString.Builder().apply {
+                append(job.description)
+            }.toAnnotatedString(),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "Responsibilities",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        ResponsibilityItemsList(responsibilities = job.responsibilities)
+
+        Spacer(
+            modifier =
+            Modifier
+                .height(30.dp)
+        )
+
+        Text(
+            text = "Requirements",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        RequirementsItemsList(requirements = job.niceToHaveSkills)
+
+        Spacer(
+            modifier =
+            Modifier
+                .height(30.dp)
+        )
+
         Button(
             onClick = {
-                onClick()
-                navController.navigate(Details.route) {
-                    launchSingleTop = true
-                    anim {
-                        slideInHorizontally(
-                            initialOffsetX = {
-                                -500
-                            },
-                            animationSpec = tween(
-                                durationMillis = 5000,
-                                easing = LinearEasing
-                            )
-                        )
-                    }
-                   // this.arguments = bundleOf("job" to job)
-                }
+
             }, modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text("View Job Details")
+            Text(text = "Submit Application")
         }
+
+        Spacer(
+            modifier =
+            Modifier
+                .height(40.dp)
+        )
 
     }
 }

@@ -44,7 +44,7 @@ fun JobCardComponent(
     job: Job, navController: NavController,
 ) {
 
-    val timeAgo = getTimeAgo(job.timePosted)
+    val timeAgo = job.timePosted?.let { getTimeAgo(it) }
     var isJobDetailsExpanded by remember { mutableStateOf(false) }
 
     Row(
@@ -104,10 +104,12 @@ fun JobCardComponent(
             }) {
                 Text(text = if (isJobDetailsExpanded) "Close" else "View")
             }
-            Text(
-                text = timeAgo, fontSize = 10.sp,
-                fontWeight = FontWeight.Normal
-            )
+            if (timeAgo != null) {
+                Text(
+                    text = timeAgo, fontSize = 10.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            }
         }
     }
 
