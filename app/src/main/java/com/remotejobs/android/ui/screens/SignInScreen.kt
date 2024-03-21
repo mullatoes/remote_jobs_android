@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +27,7 @@ import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.CreateAnAccountComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
+import com.remotejobs.android.ui.navigation.Jobs
 
 @Composable
 fun SignInScreen(navController: NavController) {
@@ -83,23 +86,34 @@ fun SignInScreen(navController: NavController) {
             fontWeight = FontWeight.Normal
         )
         ButtonComponent(buttonClick = {
-            signInWithEmailAndPassword(navController, email, password)
+            isLoading = true
+            signInWithEmailAndPassword(email, password) { isSuccess ->
+                if (isSuccess) {
+                    navController.navigate(Jobs.route)
+                } else {
+                    println("Authentication failed")
+                }
+                isLoading = false
+            }
         }, text = "Sign In")
-        CreateAnAccountComponent(onClick = { navController.navigate("register_screen") }, text = "")
+
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }
 
-fun signInWithEmailAndPassword(navController: NavController, email: String, password: String) {
+fun signInWithEmailAndPassword(email: String, password: String, onComplete: (Boolean) -> Unit) {
     Firebase.auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d(TAG, "signInWithEmail:success")
-                val user = Firebase.auth.currentUser
-                navController.navigate("jobs_screen")
+                onComplete(true)
             } else {
-
                 Log.w(TAG, "signInWithEmail:failure", task.exception)
-
+                onComplete(false)
             }
         }
 }

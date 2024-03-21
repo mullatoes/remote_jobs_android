@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.BottomNavBar
 import com.remotejobs.android.ui.screens.AppliedJobsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
@@ -22,12 +24,16 @@ fun Navigation() {
 
     val navController = rememberNavController()
 
+    val auth = Firebase.auth
+
+    val user = auth.currentUser
+
     NavHost(
         navController = navController,
-        startDestination = Welcome.route
+        startDestination = if (user == null) Welcome.route else DashBoard.route
     ) {
         composable(DashBoard.route) {
-            BottomNavBar(navController = navController)
+            BottomNavBar(navController = navController, user)
         }
         composable(Details.route) {
             JobDetailsScreen()
@@ -48,7 +54,7 @@ fun Navigation() {
             JobsScreen(navController = navController)
         }
         composable(Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController, user)
         }
         composable(SavedJobs.route) {
             SavedJobsScreen()

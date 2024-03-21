@@ -25,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
+import com.remotejobs.android.ui.navigation.Jobs
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -92,11 +93,11 @@ fun SignUpScreen(navController: NavController) {
             isLoading = true
             createUserWithEmailPassword(email, password) { isSuccess ->
                 if (isSuccess) {
-                    navController.navigate("jobs_screen")
+                    navController.navigate(Jobs.route)
                 } else {
                     println("Authentication failed")
                 }
-                isLoading = false // Set loading state to false
+                isLoading = false
             }
         }, text = "Create account")
 

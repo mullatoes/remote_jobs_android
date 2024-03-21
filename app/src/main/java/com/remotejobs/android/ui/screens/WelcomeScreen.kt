@@ -19,6 +19,8 @@ import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.CreateAnAccountComponent
 import com.remotejobs.android.ui.components.TwoRowImagesComponent
+import com.remotejobs.android.ui.navigation.SignIn
+import com.remotejobs.android.ui.navigation.SignUp
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
@@ -94,12 +96,12 @@ fun WelcomeScreen(navController: NavController) {
             modifier = Modifier
                 .height(30.dp)
         )
-        ButtonComponent(buttonClick = { navController.navigate("login_screen") }, text = "Sign In")
+        ButtonComponent(buttonClick = { navController.navigate(SignIn.route) }, text = "Sign In")
         Spacer(
             modifier = Modifier
                 .height(30.dp)
         )
-        CreateAnAccountComponent(onClick = { navController.navigate("register_screen") }, text = "Create an account")
+        CreateAnAccountComponent(onClick = { navController.navigate(SignUp.route) }, text = "Create an account")
     }
 
 }

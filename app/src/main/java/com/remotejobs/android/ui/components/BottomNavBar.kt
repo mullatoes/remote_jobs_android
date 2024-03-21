@@ -25,24 +25,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.ui.screens.AppliedJobsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
 import com.remotejobs.android.ui.screens.ProfileScreen
 import com.remotejobs.android.ui.screens.SavedJobsScreen
 import com.remotejobs.android.ui.theme.BottomNavColor
 import com.remotejobs.android.util.Screen
-import com.remotejobs.android.viewmodel.JobViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavBar(navController: NavController) {
+fun BottomNavBar(navController: NavController, user: FirebaseUser?) {
     val navigationController = rememberNavController()
 
     val context = LocalContext.current.applicationContext
@@ -178,7 +176,7 @@ fun BottomNavBar(navController: NavController) {
                 AppliedJobsScreen()
             }
             composable(Screen.Profile.screen) {
-                ProfileScreen()
+                ProfileScreen(navController, user)
             }
 
         }

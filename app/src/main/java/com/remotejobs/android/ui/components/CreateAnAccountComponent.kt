@@ -8,7 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun CreateAnAccountComponent(onClick: () -> Unit, text: String) {
+fun CreateAnAccountComponent(
+    onClick: () -> Unit,
+    text: String
+) {
     Text(
         text = text,
         modifier = Modifier

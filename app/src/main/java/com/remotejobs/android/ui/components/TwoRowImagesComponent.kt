@@ -75,13 +75,3 @@ fun TwoRowImagesComponent(left: Int, right: Int, leftText: String, rightText: St
         }
     }
 }
-
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Composable
-fun TwoImagePreview() {
-    // TwoRowImagesComponent()
-}
