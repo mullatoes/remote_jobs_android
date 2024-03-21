@@ -40,7 +40,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.R
+import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
+import com.remotejobs.android.ui.components.SortFilterBottomSheet
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
 import com.remotejobs.android.viewmodel.JobViewModel
 
@@ -51,16 +53,19 @@ fun JobsScreen(navController: NavController) {
 
     val viewModel: JobViewModel = viewModel()
 
-    val auth = Firebase.auth
-    val user = auth.currentUser
-
     val jobs by viewModel.jobs.observeAsState(initial = emptyList())
     val allJobs = jobs.toMutableList()
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("") }
 
-    val categories = listOf("SQL", "React", "iOS", "Android", "Backend","Next js")
+    var isFilterSortBottomSheetExpanded by remember { mutableStateOf(false) }
+
+    val categories = listOf("SQL", "React", "iOS", "Android", "Backend", "Next js")
+
+    //filter by location(country)
+    //remote(worldwide)
+    //specialization e.g java,
 
     val filteredJobs = if (searchQuery.isEmpty() && selectedCategory.isEmpty()) {
         allJobs
@@ -72,16 +77,13 @@ fun JobsScreen(navController: NavController) {
                     job.company.contains(searchQuery, ignoreCase = true)
         }
     } else {
-        allJobs.filter { job -> job.type == selectedCategory }
+        val categoryToFilter = if (selectedCategory.isNotEmpty()) selectedCategory else null
+        allJobs.filter { job ->
+            job.title.equals(categoryToFilter, ignoreCase = true)
+        }
     }
 
     Column(Modifier.padding(5.dp)) {
-//        Text(
-//            text = "Remote Jobs",
-//            fontSize = 20.sp,
-//            fontWeight = FontWeight.Bold,
-//            modifier = Modifier.fillMaxWidth()
-//        )
 
         TopAppBarWithTextAndImage(title = "Remote Jobs", icon = R.drawable.notifications)
 
@@ -108,7 +110,7 @@ fun JobsScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Browse by category",
+            text = "Filter by category",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
@@ -116,16 +118,27 @@ fun JobsScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyRow {
-            items(categories) { category ->
-                Button(
-                    onClick = { selectedCategory = category },
-                    modifier = Modifier.padding(horizontal = 4.dp)
-                ) {
-                    Text(category)
-                }
+
+        FilterComponent{
+          isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
+        }
+
+        if (isFilterSortBottomSheetExpanded) {
+            SortFilterBottomSheet {
+                isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
             }
         }
+
+//        LazyRow {
+//            items(categories) { category ->
+//                Button(
+//                    onClick = { selectedCategory = category },
+//                    modifier = Modifier.padding(horizontal = 4.dp)
+//                ) {
+//                    Text(category)
+//                }
+//            }
+//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
