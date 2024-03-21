@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.remotejobs.android.model.Job
 import java.time.LocalDateTime
@@ -28,6 +29,7 @@ class JobViewModel : ViewModel() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchJobs() {
         firestore.collection("jobs")
+            .orderBy("timePosted", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null)
                     return@addSnapshotListener

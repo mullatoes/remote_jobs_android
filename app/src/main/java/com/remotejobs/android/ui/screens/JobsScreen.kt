@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -24,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -36,7 +39,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.JobCardList
+import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
 import com.remotejobs.android.viewmodel.JobViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,49 +57,39 @@ fun JobsScreen(navController: NavController) {
     val jobs by viewModel.jobs.observeAsState(initial = emptyList())
     val allJobs = jobs.toMutableList()
 
-    val searchQuery = remember {
-        mutableStateOf("")
-    }
+    var searchQuery by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("") }
 
     val categories = listOf("SQL", "React", "iOS", "Android", "Backend","Next js")
 
-    val selectedCategory = remember { mutableStateOf("") }
-
-    val filteredJobs = if (searchQuery.value.isEmpty() && selectedCategory.value.isEmpty()) {
+    val filteredJobs = if (searchQuery.isEmpty() && selectedCategory.isEmpty()) {
         allJobs
-    } else if (searchQuery.value.isNotEmpty()) {
+    } else if (searchQuery.isNotEmpty()) {
         allJobs.filter { job ->
-            job.title.contains(searchQuery.value, ignoreCase = true) ||
-                    job.type.contains(searchQuery.value, ignoreCase = true) ||
-                    job.description.contains(searchQuery.value, ignoreCase = true) ||
-                    job.company.contains(searchQuery.value, ignoreCase = true)
+            job.title.contains(searchQuery, ignoreCase = true) ||
+                    job.type.contains(searchQuery, ignoreCase = true) ||
+                    job.description.contains(searchQuery, ignoreCase = true) ||
+                    job.company.contains(searchQuery, ignoreCase = true)
         }
     } else {
-        allJobs.filter { job -> job.type == selectedCategory.value }
+        allJobs.filter { job -> job.type == selectedCategory }
     }
 
-    Column {
-        Spacer(
-            modifier = Modifier
-                .height(15.dp)
-        )
-        Text(
-            text = "Remote Jobs",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
+    Column(Modifier.padding(5.dp)) {
+//        Text(
+//            text = "Remote Jobs",
+//            fontSize = 20.sp,
+//            fontWeight = FontWeight.Bold,
+//            modifier = Modifier.fillMaxWidth()
+//        )
 
-        Spacer(
-            modifier = Modifier
-                .height(25.dp)
-        )
+        TopAppBarWithTextAndImage(title = "Remote Jobs", icon = R.drawable.notifications)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = searchQuery.value,
-            onValueChange = { searchQuery.value = it },
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -107,38 +102,24 @@ fun JobsScreen(navController: NavController) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(
-            modifier = Modifier
-                .height(15.dp)
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         Text(
             text = "Browse by category",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(
-            modifier = Modifier
-                .height(15.dp)
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(state = rememberScrollState())
-        ) {
-            categories.forEach { category ->
+        LazyRow {
+            items(categories) { category ->
                 Button(
-                    onClick = { selectedCategory.value = category },
+                    onClick = { selectedCategory = category },
                     modifier = Modifier.padding(horizontal = 4.dp)
                 ) {
                     Text(category)
@@ -146,10 +127,7 @@ fun JobsScreen(navController: NavController) {
             }
         }
 
-        Spacer(
-            modifier = Modifier
-                .height(25.dp)
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
         JobCardList(filteredJobs, navController)
     }

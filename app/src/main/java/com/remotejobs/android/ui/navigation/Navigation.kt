@@ -24,7 +24,7 @@ fun Navigation() {
 
     NavHost(
         navController = navController,
-        startDestination = DashBoard.route
+        startDestination = Welcome.route
     ) {
         composable(DashBoard.route) {
             BottomNavBar(navController = navController)

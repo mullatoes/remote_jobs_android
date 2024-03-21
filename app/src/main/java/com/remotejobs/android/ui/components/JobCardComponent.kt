@@ -81,7 +81,7 @@ fun JobCardComponent(
             Column {
                 Text(
                     text = job.title,
-                    fontSize = 15.sp,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(
@@ -90,7 +90,7 @@ fun JobCardComponent(
                 )
                 Text(
                     text = job.company,
-                    fontSize = 10.sp
+                    fontSize = 8.sp
                 )
             }
         }
@@ -129,12 +129,28 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
     val difference = ChronoUnit.MINUTES.between(timePosted, now)
 
     return when {
+        difference < 1 -> "just now"
         difference < 60 -> "$difference mins ago"
-        difference < 1440 -> "${difference / 60} hrs ago"
-        difference < 10080 -> "${difference / 1440} days ago"
-        difference < 43800 -> "${difference / 10080} week ago"
-        difference < 525600 -> "${difference / 43800} month ago"
-        else -> "${difference / 525600} years ago"
+        difference < 1440 -> {
+            val hours = difference / 60
+            if (hours == 1L) "1 hr ago" else "$hours hrs ago"
+        }
+        difference < 10080 -> {
+            val days = difference / 1440
+            if (days == 1L) "1 day ago" else "$days days ago"
+        }
+        difference < 43800 -> {
+            val weeks = difference / 10080
+            if (weeks == 1L) "1 week ago" else "$weeks weeks ago"
+        }
+        difference < 525600 -> {
+            val months = difference / 43800
+            if (months == 1L) "1 month ago" else "$months months ago"
+        }
+        else -> {
+            val years = difference / 525600
+            if (years == 1L) "1 year ago" else "$years years ago"
+        }
     }
 }
 
