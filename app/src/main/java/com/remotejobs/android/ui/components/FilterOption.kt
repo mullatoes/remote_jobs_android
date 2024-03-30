@@ -24,7 +24,12 @@ fun FilterOption(
     var selected by remember { mutableStateOf(false) }
 
     FilterChip(
-        onClick = { selected = !selected },
+        onClick = {
+          selected = !selected
+            onClick()
+
+                  },
+
         label = {
             Text(name)
         },

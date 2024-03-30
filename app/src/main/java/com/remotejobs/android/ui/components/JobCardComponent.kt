@@ -3,9 +3,11 @@ package com.remotejobs.android.ui.components
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -157,25 +159,29 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JobCardList(jobs: List<Job>,  navController: NavController,) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
-        items(jobs) { job ->
-            Spacer(modifier = Modifier.height(8.dp))
-            JobCardComponent(
-                job, navController
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color.Black, thickness = 0.5.dp)
+    if (jobs.isEmpty()){
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Sorry, no jobs for that category", color = Color.Gray)
+        }
+    }else {
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            items(jobs) { job ->
+                Spacer(modifier = Modifier.height(8.dp))
+                JobCardComponent(
+                    job, navController
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider(color = Color.Black, thickness = 0.5.dp)
+            }
         }
     }
-}
-
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-@Composable
-fun JobCardComponentPreview() {
-    // JobCardComponent(image = "https://media.licdn.com/dms/image/C560BAQH9qeI8ekCATA/company-logo_200_200/0/1646788525018/wonders_corporation_logo?e=1717632000&v=beta&t=uhdiDVY9jL6yEvT5sTJfOF6DwSCA9pkgBJJ7SH6fHF0", title = "Android Developer", type = "remote")
 }

@@ -2,7 +2,9 @@ package com.remotejobs.android.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +36,10 @@ fun SortBottomSheet(onDismiss: () -> Unit) {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
+            
+            Text(text = "Filters")
+            
+            Spacer(modifier = Modifier.height(10.dp))
 
             FilterOptionBottomSheet(
                 name = "Location",
@@ -43,18 +49,6 @@ fun SortBottomSheet(onDismiss: () -> Unit) {
                         selectedFilters.value.remove("Location")
                     } else {
                         selectedFilters.value.add("Location")
-                    }
-                }
-            )
-
-            FilterOptionBottomSheet(
-                name = "Job Type",
-                isSelected = selectedFilters.value.contains("Job Type"),
-                onFilterSelected = {
-                    if (selectedFilters.value.contains("Job Type")) {
-                        selectedFilters.value.remove("Job Type")
-                    } else {
-                        selectedFilters.value.add("Job Type")
                     }
                 }
             )

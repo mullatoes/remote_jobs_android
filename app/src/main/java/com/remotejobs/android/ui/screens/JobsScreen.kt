@@ -46,19 +46,14 @@ fun JobsScreen(navController: NavController) {
     val allJobs = jobs.toMutableList()
 
     var searchQuery by remember { mutableStateOf("") }
-    var selectedCategory by remember { mutableStateOf("") }
+
 
     var isFilterSortBottomSheetExpanded by remember { mutableStateOf(false) }
+    var selectedLocation by remember { mutableStateOf<String?>(null) }
+    var selectedExperience by remember { mutableStateOf<String?>(null) }
+    var selectedSalary by remember { mutableStateOf<String?>(null) }
 
-    val categories = listOf("SQL", "React", "iOS", "Android", "Backend", "Next js")
-
-    //filter by location(country)
-    //remote(worldwide)
-    //specialization e.g java,
-
-    val filteredJobs = if (searchQuery.isEmpty() && selectedCategory.isEmpty()) {
-        allJobs
-    } else if (searchQuery.isNotEmpty()) {
+    val filteredJobs = if (searchQuery.isNotEmpty()) {
         allJobs.filter { job ->
             job.title.contains(searchQuery, ignoreCase = true) ||
                     job.type.contains(searchQuery, ignoreCase = true) ||
@@ -66,9 +61,10 @@ fun JobsScreen(navController: NavController) {
                     job.company.contains(searchQuery, ignoreCase = true)
         }
     } else {
-        val categoryToFilter = if (selectedCategory.isNotEmpty()) selectedCategory else null
         allJobs.filter { job ->
-            job.title.equals(categoryToFilter, ignoreCase = true)
+            (selectedLocation == null || job.companyCountry == selectedLocation) &&
+                    (selectedExperience == null || job.experienceLevel == selectedExperience) &&
+                    (selectedSalary == null || job.payScaleMin.toString() == selectedSalary)
         }
     }
 
@@ -108,9 +104,20 @@ fun JobsScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
 
-        FilterComponent{
-          isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
-        }
+        FilterComponent(
+            onFilterClick = {
+                isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
+            },
+            onExperienceFilter = {
+                                 selectedExperience = it
+            },
+            onLocationFilter = {
+                               selectedLocation = it
+            },
+            onSalaryFilter = {
+                selectedSalary = it
+            }
+        )
 
         if (isFilterSortBottomSheetExpanded) {
             SortBottomSheet {
@@ -118,16 +125,6 @@ fun JobsScreen(navController: NavController) {
             }
         }
 
-//        LazyRow {
-//            items(categories) { category ->
-//                Button(
-//                    onClick = { selectedCategory = category },
-//                    modifier = Modifier.padding(horizontal = 4.dp)
-//                ) {
-//                    Text(category)
-//                }
-//            }
-//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
