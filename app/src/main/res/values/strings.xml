@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">remote jobs</string>
+    <string name="submit_url_not_available">The submission URL is not available.</string>
+    <string name="dialog_continue">Continue</string>
+    <string name="dialog_message">Let the employer know that you applied or heard about them from here.</string>
+    <string name="dialog_title">Application Confirmation</string>
+    <string name="dialog_cancel">CANCEL</string>
+    <string name="submit_application">Submit Application</string>
+    <string name="requirements">Requirements</string>
+    <string name="responsibilities">Responsibilities</string>
+    <string name="job_description">Job Description</string>
+    <string name="about_the_job">About the job</string>
+    <string name="applications">"Applications: "</string>
+    <string name="views">"Views: "</string>
+    <string name="skills">"Skills: "</string>
+    <string name="company_size">"Company Size: "</string>
+    <string name="filter_by_category">Filter by category</string>
+    <string name="search_for_job_title_companies">Search for job title, companies...</string>
+    <string name="remote_jobs">Remote Jobs</string>
+
 </resources>

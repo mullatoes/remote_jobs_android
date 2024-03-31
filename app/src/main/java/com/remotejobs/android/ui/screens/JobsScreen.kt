@@ -23,11 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
@@ -38,7 +40,7 @@ import com.remotejobs.android.viewmodel.JobViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobsScreen(navController: NavController) {
+fun JobsScreen(navController: NavController, user: FirebaseUser?) {
 
     val viewModel: JobViewModel = viewModel()
 
@@ -70,7 +72,7 @@ fun JobsScreen(navController: NavController) {
 
     Column(Modifier.padding(5.dp)) {
 
-        TopAppBarWithTextAndImage(title = "Remote Jobs", icon = R.drawable.notifications)
+        TopAppBarWithTextAndImage(title = stringResource(R.string.remote_jobs), icon = R.drawable.notifications)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -84,7 +86,7 @@ fun JobsScreen(navController: NavController) {
                     tint = LocalContentColor.current
                 )
             },
-            placeholder = { Text("Search for job title, companies...") },
+            placeholder = { Text(stringResource(R.string.search_for_job_title_companies)) },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -95,7 +97,7 @@ fun JobsScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Filter by category",
+            text = stringResource(R.string.filter_by_category),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
@@ -128,7 +130,7 @@ fun JobsScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        JobCardList(filteredJobs, navController)
+        JobCardList(filteredJobs, navController, user)
     }
 
 }

@@ -24,11 +24,9 @@ import androidx.navigation.NavController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.ButtonComponent
-import com.remotejobs.android.ui.components.CreateAnAccountComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
 import com.remotejobs.android.ui.navigation.DashBoard
-import com.remotejobs.android.ui.navigation.Jobs
 
 @Composable
 fun SignInScreen(navController: NavController) {

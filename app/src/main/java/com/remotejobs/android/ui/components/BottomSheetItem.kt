@@ -1,6 +1,12 @@
 package com.remotejobs.android.ui.components
 
+import Job
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,13 +29,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.remotejobs.android.R
-import com.remotejobs.android.model.Job
+import com.remotejobs.android.util.showMessage
+
 import com.remotejobs.android.viewmodel.JobViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -39,6 +48,8 @@ fun BottomSheetItem(
     viewModel: JobViewModel,
     onClick: () -> Unit
 ) {
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.clickable {
@@ -61,6 +72,9 @@ fun BottomSheetItem(
                 Icons.Default.Share,
                 contentDescription = null,
                 tint = Color.Black,
+                modifier = Modifier.clickable {
+                    shareJob(context, job)
+                }
             )
         }
 
@@ -175,7 +189,7 @@ fun BottomSheetItem(
                 Modifier.width(10.dp)
             )
             Text(
-                text = "Company Size: ",
+                text = stringResource(R.string.company_size),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -214,7 +228,7 @@ fun BottomSheetItem(
                 Modifier.width(10.dp)
             )
             Text(
-                text = "Skills: ",
+                text = stringResource(R.string.skills),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -242,7 +256,7 @@ fun BottomSheetItem(
                 Modifier.width(10.dp)
             )
             Text(
-                text = "Views: ",
+                text = stringResource(R.string.views),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
 
@@ -275,7 +289,7 @@ fun BottomSheetItem(
                 Modifier.width(10.dp)
             )
             Text(
-                text = "Applications: ",
+                text = stringResource(R.string.applications),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
 
@@ -307,7 +321,7 @@ fun BottomSheetItem(
         )
 
         Text(
-            text = "About the job",
+            text = stringResource(R.string.about_the_job),
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
@@ -315,7 +329,7 @@ fun BottomSheetItem(
         )
 
         Text(
-            text = "Job Description",
+            text = stringResource(R.string.job_description),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
@@ -331,7 +345,7 @@ fun BottomSheetItem(
         )
 
         Text(
-            text = "Responsibilities",
+            text = stringResource(R.string.responsibilities),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -345,7 +359,7 @@ fun BottomSheetItem(
         )
 
         Text(
-            text = "Requirements",
+            text = stringResource(R.string.requirements),
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -361,12 +375,15 @@ fun BottomSheetItem(
         Button(
             onClick = {
 
-                      viewModel.incrementApplicationNumber(job.jobId)
+                val submitUrl = job.submitUrl
+                showApplicationDialog(context,submitUrl){
+                    viewModel.incrementApplicationNumber(job.jobId)
+                }
 
             }, modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Text(text = "Submit Application")
+            Text(text = stringResource(R.string.submit_application))
         }
 
         Spacer(
@@ -375,5 +392,37 @@ fun BottomSheetItem(
                 .height(40.dp)
         )
 
+    }
+}
+
+
+fun shareJob(context: Context, job: Job) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        val message = "Hey friend, here is a job that might suit you: \"${job.title}\". Click here to apply: ${job.submitUrl}"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, message)
+        context.startActivity(Intent.createChooser(shareIntent, "Share job via"))
+}
+
+
+fun showApplicationDialog(context: Context, submitUrl: String, onContinue: () -> Unit) {
+    val builder = AlertDialog.Builder(context)
+    builder.apply {
+        setTitle(context.getString(R.string.dialog_title))
+        setMessage(context.getString(R.string.dialog_message))
+        setPositiveButton(context.getString(R.string.dialog_continue)) { dialog, _ ->
+            dialog.dismiss()
+            if (submitUrl.isNotEmpty()) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(submitUrl))
+                context.startActivity(intent)
+                onContinue()
+            } else {
+                showMessage(context, context.getString(R.string.submit_url_not_available))
+            }
+        }
+        setNegativeButton(context.getString(R.string.dialog_cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        show()
     }
 }

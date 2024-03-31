@@ -14,10 +14,11 @@ import com.remotejobs.android.ui.components.BottomNavBar
 import com.remotejobs.android.ui.screens.AppliedJobsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
 import com.remotejobs.android.ui.screens.ProfileScreen
-import com.remotejobs.android.ui.screens.SavedJobsScreen
+import com.remotejobs.android.ui.screens.UserBookmarkedJobsScreen
 import com.remotejobs.android.ui.screens.SignInScreen
 import com.remotejobs.android.ui.screens.SignUpScreen
 import com.remotejobs.android.ui.screens.WelcomeScreen
+import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.ProfileViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,13 +32,14 @@ fun Navigation() {
     val user = auth.currentUser
 
     val profileViewModel: ProfileViewModel = viewModel()
+    val jobViewModel: JobViewModel = viewModel()
 
     NavHost(
         navController = navController,
         startDestination = if (user == null) Welcome.route else DashBoard.route
     ) {
         composable(DashBoard.route) {
-            BottomNavBar(navController = navController, user,profileViewModel)
+            BottomNavBar(navController = navController, user,profileViewModel, jobViewModel)
         }
         composable(Details.route) {
             JobDetailsScreen()
@@ -55,13 +57,13 @@ fun Navigation() {
             AppliedJobsScreen()
         }
         composable(Jobs.route) {
-            JobsScreen(navController = navController)
+            JobsScreen(navController = navController, user)
         }
         composable(Profile.route) {
             ProfileScreen(navController, user, profileViewModel)
         }
         composable(SavedJobs.route) {
-            SavedJobsScreen()
+            UserBookmarkedJobsScreen(navController,jobViewModel,user)
         }
 
     }

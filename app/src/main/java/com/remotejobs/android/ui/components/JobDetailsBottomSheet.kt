@@ -1,5 +1,6 @@
 package com.remotejobs.android.ui.components
 
+import Job
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.remotejobs.android.model.Job
 import com.remotejobs.android.viewmodel.JobViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)

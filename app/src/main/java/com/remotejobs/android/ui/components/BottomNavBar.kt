@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -33,15 +34,16 @@ import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.ui.screens.AppliedJobsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
 import com.remotejobs.android.ui.screens.ProfileScreen
-import com.remotejobs.android.ui.screens.SavedJobsScreen
+import com.remotejobs.android.ui.screens.UserBookmarkedJobsScreen
 import com.remotejobs.android.ui.theme.BottomNavColor
 import com.remotejobs.android.util.Screen
+import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.ProfileViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: ProfileViewModel) {
+fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: ProfileViewModel, jobViewModel: JobViewModel) {
     val navigationController = rememberNavController()
 
     val context = LocalContext.current.applicationContext
@@ -89,7 +91,7 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
                 ) {
 
                     Icon(
-                        Icons.Default.CheckCircle,
+                        Icons.Default.Bookmark,
                         contentDescription = null,
                         modifier = Modifier.size(26.dp),
                         tint = if (selected.value == Icons.Default.CheckCircle) Color.LightGray else Color.DarkGray
@@ -168,10 +170,10 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Home.screen) {
-                JobsScreen(navController)
+                JobsScreen(navController, user)
             }
             composable(Screen.Saved.screen) {
-                SavedJobsScreen()
+                UserBookmarkedJobsScreen(navController,jobViewModel, user)
             }
             composable(Screen.Applications.screen) {
                 AppliedJobsScreen()
