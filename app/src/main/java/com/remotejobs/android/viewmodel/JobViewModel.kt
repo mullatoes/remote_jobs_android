@@ -103,6 +103,12 @@ class JobViewModel : ViewModel() {
             .update("views", FieldValue.increment(1))
     }
 
+    fun incrementApplicationNumber(jobId: String){
+        firestore.collection("jobs")
+            .document(jobId)
+            .update("applications", FieldValue.increment(1))
+    }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

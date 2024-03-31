@@ -36,11 +36,12 @@ import com.remotejobs.android.ui.screens.ProfileScreen
 import com.remotejobs.android.ui.screens.SavedJobsScreen
 import com.remotejobs.android.ui.theme.BottomNavColor
 import com.remotejobs.android.util.Screen
+import com.remotejobs.android.viewmodel.ProfileViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavBar(navController: NavController, user: FirebaseUser?) {
+fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: ProfileViewModel) {
     val navigationController = rememberNavController()
 
     val context = LocalContext.current.applicationContext
@@ -176,7 +177,7 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?) {
                 AppliedJobsScreen()
             }
             composable(Screen.Profile.screen) {
-                ProfileScreen(navController, user)
+                ProfileScreen(navController, user, viewModel)
             }
 
         }

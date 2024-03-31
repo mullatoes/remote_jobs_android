@@ -1,38 +1,165 @@
 package com.remotejobs.android.ui.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.R
-import com.remotejobs.android.ui.components.ProfileAppBar
+import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
+import com.remotejobs.android.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController, user: FirebaseUser?) {
-
+fun ProfileScreen(
+    navController: NavController,
+    user: FirebaseUser?,
+    viewModel: ProfileViewModel) {
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .padding(10.dp)
     ) {
         ProfileAppBar(title = "Profile", icon = R.drawable.backarrow) {
             navController.popBackStack()
         }
-        Text(
-            text = "User email: ${user?.email}",
-            fontSize = 20.sp,
-            color = Color.DarkGray
-        )
-        Text(
-            text = "User email: ${user?.isAnonymous}",
-            fontSize = 20.sp,
-            color = Color.DarkGray
-        )
+        Spacer(modifier = Modifier.height(16.dp))
+        UserInfo(user = user)
+        Spacer(modifier = Modifier.weight(1f))
+        LogoutButton(viewModel = viewModel)
     }
+}
 
+@Composable
+fun UserInfo(user: FirebaseUser?) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        UserCard(user = user)
+        UserCard(user = user)
+        UserCard(user = user)
+        NotificationsCard()
+        NotificationsCard()
+        NotificationsCard()
+        // Add more cards for other user information if needed
+    }
+}
+
+
+@Composable
+fun UserCard(user: FirebaseUser?) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                if (user?.photoUrl != null) {
+                    Image(
+                        modifier = Modifier.size(50.dp),
+                        painter = rememberImagePainter(user.photoUrl),
+                        contentDescription = "Profile Picture"
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier.size(50.dp),
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = "Profile Placeholder"
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = user?.displayName ?: "Not Provided",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    imageVector = Icons.Outlined.Email,
+                    contentDescription = "Email Icon"
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "Email: ${user?.email ?: "Not Provided"}")
+            }
+            // Add similar rows for other user information with relevant icons
+        }
+    }
+}
+
+@Composable
+fun NotificationsCard() {
+    // Placeholder for notifications card
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Notifications",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            // Add notifications content here
+        }
+    }
+}
+
+
+@Composable
+fun ProfileAppBar(title: String, icon: Int, onBackClicked: () -> Unit) {
+    TopAppBarWithTextAndImage(
+        title = title,
+        icon = icon
+    )
+}
+
+@Composable
+fun LogoutButton(viewModel: ProfileViewModel) {
+    Button(
+        onClick = { viewModel.logout() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+    ) {
+        Text(text = "Logout", color = Color.White)
+    }
 }
