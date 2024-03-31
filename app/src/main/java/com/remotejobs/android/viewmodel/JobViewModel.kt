@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.remotejobs.android.model.Job
@@ -37,6 +38,8 @@ class JobViewModel : ViewModel() {
                 val jobList = mutableListOf<Job>()
                 snapshot?.documents?.forEach { document ->
 
+                    val jobId = document.id
+
                     val title = document.getString("title") ?: ""
                     val type = document.getString("type") ?: ""
                     val description = document.getString("description") ?: ""
@@ -65,6 +68,7 @@ class JobViewModel : ViewModel() {
 
                     jobList.add(
                         Job(
+                            jobId,
                             title,
                             type,
                             description,
@@ -92,6 +96,13 @@ class JobViewModel : ViewModel() {
                 _jobs.value = jobList
             }
     }
+
+    fun incrementViews(jobId: String){
+        firestore.collection("jobs")
+            .document(jobId)
+            .update("views", FieldValue.increment(1))
+    }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

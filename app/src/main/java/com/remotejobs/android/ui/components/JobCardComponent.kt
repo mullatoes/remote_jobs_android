@@ -37,12 +37,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.remotejobs.android.model.Job
+import com.remotejobs.android.viewmodel.JobViewModel
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JobCardComponent(
+    viewModel: JobViewModel,
     job: Job, navController: NavController,
 ) {
 
@@ -102,6 +104,7 @@ fun JobCardComponent(
         ) {
             Button(onClick = {
                 isJobDetailsExpanded = !isJobDetailsExpanded
+                viewModel.incrementViews(job.jobId)
 
             }) {
                 Text(text = if (isJobDetailsExpanded) "Close" else "View")
@@ -167,7 +170,7 @@ fun JobCardList(jobs: List<Job>,  navController: NavController,) {
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("Sorry, no jobs for that category", color = Color.Gray)
+            Text("Sorry, no jobs for that category \nTry home section for more jobs", color = Color.Gray)
         }
     }else {
 
@@ -176,7 +179,7 @@ fun JobCardList(jobs: List<Job>,  navController: NavController,) {
         ) {
             items(jobs) { job ->
                 Spacer(modifier = Modifier.height(8.dp))
-                JobCardComponent(
+                JobCardComponent(viewModel = JobViewModel(),
                     job, navController
                 )
                 Spacer(modifier = Modifier.height(8.dp))

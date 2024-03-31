@@ -27,7 +27,6 @@ fun FilterOption(
         onClick = {
           selected = !selected
             onClick()
-
                   },
 
         label = {

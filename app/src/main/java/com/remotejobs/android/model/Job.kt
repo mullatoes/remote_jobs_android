@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Job(
+    val jobId : String,
     val title: String, //e.g SQL Developer
     val type: String, // remote onsite
     val description: String, // About job
@@ -15,7 +16,7 @@ data class Job(
     val skills: ArrayList<String>?, //iOS, iOS Development
     val payScaleMin: Int?, //100
     val payScaleMax: Int?, // 154
-    val views: Int?, //76
+    var views: Int?, //76
     val applications: Int?, // 80
     val noOfEmployeesLowBound: Int?, //10
     val noOfEmployeesHighBound: Int?, // 500
