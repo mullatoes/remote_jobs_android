@@ -32,6 +32,7 @@ import coil.compose.rememberImagePainter
 import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
+import com.remotejobs.android.ui.navigation.SignIn
 import com.remotejobs.android.viewmodel.ProfileViewModel
 
 @Composable
@@ -50,7 +51,7 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
         UserInfo(user = user)
         Spacer(modifier = Modifier.weight(1f))
-        LogoutButton(viewModel = viewModel)
+        LogoutButton(viewModel = viewModel, navController)
     }
 }
 
@@ -152,9 +153,12 @@ fun ProfileAppBar(title: String, icon: Int, onBackClicked: () -> Unit) {
 }
 
 @Composable
-fun LogoutButton(viewModel: ProfileViewModel) {
+fun LogoutButton(viewModel: ProfileViewModel, navController: NavController) {
     Button(
-        onClick = { viewModel.logout() },
+        onClick = {
+            viewModel.logout()
+            navController.navigate(SignIn.route)
+                  },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
