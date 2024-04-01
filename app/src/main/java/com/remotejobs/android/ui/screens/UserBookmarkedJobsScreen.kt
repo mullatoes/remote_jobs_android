@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -25,9 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.ui.components.BookmarkJobCardList
 import com.remotejobs.android.viewmodel.JobViewModel
+import com.remotejobs.android.viewmodel.UserViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,10 +38,32 @@ import com.remotejobs.android.viewmodel.JobViewModel
 fun UserBookmarkedJobsScreen(
     navController: NavController,
     viewModel: JobViewModel,
-    user: FirebaseUser?) {
+    userViewModel: UserViewModel,
+    ) {
 
     val bookmarkedJobs by remember(viewModel)
     { viewModel.bookmarkedJobs }.observeAsState()
+
+    val user = userViewModel.user.value
+
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Bookmarks") },
+                actions = {
+                    IconButton(onClick = {
+                        if (user != null) {
+                            viewModel.getBookmarkedJobs(user)
+                        }
+                    }) {
+                        Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
+                    }
+                }
+            )
+        },
+        contentColor = MaterialTheme.colorScheme.surface
+    ) {
 
 
         if (user == null) {
@@ -59,26 +82,15 @@ fun UserBookmarkedJobsScreen(
                     Text("You haven't bookmarked any jobs yet")
                 }
             } else {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Bookmarks") },
-                            actions = {
-                                IconButton(onClick = { viewModel.getBookmarkedJobs(user) }) {
-                                    Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
-                                }
-                            }
-                        )
-                    }
+
+                Column(
+                    Modifier.padding(5.dp)
                 ) {
-                    Column(
-                        Modifier.padding(5.dp)
-                    ) {
-                        Spacer(modifier = Modifier.height(60.dp))
-                        BookmarkJobCardList(bookmarkedJobs!!, navController, user)
-                    }
+                    Spacer(modifier = Modifier.height(60.dp))
+                    BookmarkJobCardList(bookmarkedJobs!!, navController, user)
                 }
             }
         }
+    }
 
 }

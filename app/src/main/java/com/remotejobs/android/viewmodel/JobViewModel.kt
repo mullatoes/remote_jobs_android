@@ -153,6 +153,23 @@ class JobViewModel : ViewModel() {
         }
     }
 
+    fun checkIfJobIsBookmarked(jobId: String, userId: String, callback: (Boolean) -> Unit) {
+        val userBookmarksRef = firestore.collection("user_bookmarks").document(userId)
+        userBookmarksRef.get()
+            .addOnSuccessListener { document ->
+                val bookmarkedJobIds = document.toObject<UserBookmarks>()?.bookmarkedJobIds ?: emptyList()
+                val isBookmarked = bookmarkedJobIds.contains(jobId)
+                callback(isBookmarked)
+            }
+            .addOnFailureListener { exception ->
+                exception.message?.let {
+                    Log.d("error", it)
+                }
+                callback(false)
+            }
+    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBookmarkedJobs(user: FirebaseUser) {

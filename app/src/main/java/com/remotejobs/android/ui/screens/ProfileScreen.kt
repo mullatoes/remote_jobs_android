@@ -34,25 +34,33 @@ import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
 import com.remotejobs.android.ui.navigation.SignIn
 import com.remotejobs.android.viewmodel.ProfileViewModel
+import com.remotejobs.android.viewmodel.UserViewModel
 
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    user: FirebaseUser?,
-    viewModel: ProfileViewModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-    ) {
-        ProfileAppBar(title = "Profile", icon = R.drawable.backarrow) {
-            navController.popBackStack()
+    viewModel: ProfileViewModel,
+    userViewModel: UserViewModel) {
+
+    val user = userViewModel.user
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+
+
+            ProfileAppBar(title = "Profile", icon = R.drawable.backarrow) {
+                navController.popBackStack()
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            UserInfo(user = userViewModel.user.value)
+            Spacer(modifier = Modifier.weight(1f))
+            LogoutButton(viewModel = viewModel, navController)
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        UserInfo(user = user)
-        Spacer(modifier = Modifier.weight(1f))
-        LogoutButton(viewModel = viewModel, navController)
-    }
+
 }
 
 @Composable

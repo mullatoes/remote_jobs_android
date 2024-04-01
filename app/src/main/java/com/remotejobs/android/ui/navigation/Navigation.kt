@@ -4,14 +4,13 @@ import JobDetailsScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.remotejobs.android.ui.components.BottomNavBar
-import com.remotejobs.android.ui.screens.AppliedJobsScreen
+import com.remotejobs.android.ui.screens.NewsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
 import com.remotejobs.android.ui.screens.ProfileScreen
 import com.remotejobs.android.ui.screens.UserBookmarkedJobsScreen
@@ -20,26 +19,29 @@ import com.remotejobs.android.ui.screens.SignUpScreen
 import com.remotejobs.android.ui.screens.WelcomeScreen
 import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.ProfileViewModel
+import com.remotejobs.android.viewmodel.UserViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Navigation() {
+fun Navigation(
+    userViewModel: UserViewModel,
+    profileViewModel: ProfileViewModel,
+    jobViewModel: JobViewModel
+) {
 
     val navController = rememberNavController()
 
     val auth = Firebase.auth
-
     val user = auth.currentUser
 
-    val profileViewModel: ProfileViewModel = viewModel()
-    val jobViewModel: JobViewModel = viewModel()
+    userViewModel.setUser(user)
 
     NavHost(
         navController = navController,
-        startDestination = if (user == null) Welcome.route else DashBoard.route
+        startDestination = if(user != null) DashBoard.route else SignIn.route
     ) {
         composable(DashBoard.route) {
-            BottomNavBar(navController = navController, user,profileViewModel, jobViewModel)
+            BottomNavBar(navController = navController,profileViewModel, jobViewModel,userViewModel)
         }
         composable(Details.route) {
             JobDetailsScreen()
@@ -54,16 +56,16 @@ fun Navigation() {
             SignUpScreen(navController = navController)
         }
         composable(AppliedJobs.route) {
-            AppliedJobsScreen()
+            NewsScreen()
         }
         composable(Jobs.route) {
-            JobsScreen(navController = navController, user)
+            JobsScreen(userViewModel)
         }
         composable(Profile.route) {
-            ProfileScreen(navController, user, profileViewModel)
+            ProfileScreen(navController, profileViewModel, userViewModel)
         }
         composable(SavedJobs.route) {
-            UserBookmarkedJobsScreen(navController,jobViewModel,user)
+            UserBookmarkedJobsScreen(navController,jobViewModel, userViewModel)
         }
 
     }

@@ -10,13 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,8 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseUser
-import com.remotejobs.android.ui.screens.AppliedJobsScreen
+import com.remotejobs.android.ui.screens.NewsScreen
 import com.remotejobs.android.ui.screens.JobsScreen
 import com.remotejobs.android.ui.screens.ProfileScreen
 import com.remotejobs.android.ui.screens.UserBookmarkedJobsScreen
@@ -39,13 +39,19 @@ import com.remotejobs.android.ui.theme.BottomNavColor
 import com.remotejobs.android.util.Screen
 import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.ProfileViewModel
+import com.remotejobs.android.viewmodel.UserViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: ProfileViewModel, jobViewModel: JobViewModel) {
-    val navigationController = rememberNavController()
+fun BottomNavBar(
+    navController: NavController,
+    viewModel: ProfileViewModel,
+    jobViewModel: JobViewModel,
+    userViewModel: UserViewModel
+) {
 
+    val navigationController = rememberNavController()
     val context = LocalContext.current.applicationContext
     val selected = remember {
         mutableStateOf(Icons.Default.Home)
@@ -54,7 +60,7 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
     Scaffold(
         bottomBar = {
             BottomAppBar(
-                containerColor = BottomNavColor
+                containerColor = MaterialTheme.colorScheme.surface
             ) {
                 /*First Item*/
                 IconButton(
@@ -121,7 +127,7 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
 
                 IconButton(
                     onClick = {
-                        selected.value = Icons.Default.Favorite
+                        selected.value = Icons.Default.Newspaper
                         navigationController.navigate(Screen.Applications.screen) {
                             popUpTo(0)
                         }
@@ -131,10 +137,10 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
                 ) {
 
                     Icon(
-                        Icons.Default.Favorite,
+                        Icons.Default.Newspaper,
                         contentDescription = null,
                         modifier = Modifier.size(26.dp),
-                        tint = if (selected.value == Icons.Default.Favorite) Color.LightGray else Color.DarkGray
+                        tint = if (selected.value == Icons.Default.Newspaper) Color.LightGray else Color.DarkGray
                     )
 
                 }
@@ -170,16 +176,16 @@ fun BottomNavBar(navController: NavController, user: FirebaseUser?, viewModel: P
             modifier = Modifier.padding(paddingValues)
         ) {
             composable(Screen.Home.screen) {
-                JobsScreen(navController, user)
+                JobsScreen(userViewModel)
             }
             composable(Screen.Saved.screen) {
-                UserBookmarkedJobsScreen(navController,jobViewModel, user)
+                UserBookmarkedJobsScreen(navController, jobViewModel, userViewModel)
             }
             composable(Screen.Applications.screen) {
-                AppliedJobsScreen()
+                NewsScreen()
             }
             composable(Screen.Profile.screen) {
-                ProfileScreen(navController, user, viewModel)
+                ProfileScreen(navController, viewModel, userViewModel)
             }
 
         }

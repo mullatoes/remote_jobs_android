@@ -20,13 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
 import com.remotejobs.android.ui.navigation.DashBoard
+import com.remotejobs.android.viewmodel.UserViewModel
 
 @Composable
 fun SignInScreen(navController: NavController) {
@@ -42,6 +45,8 @@ fun SignInScreen(navController: NavController) {
     var isLoading by remember {
         mutableStateOf(false)
     }
+
+    val userViewModel: UserViewModel = viewModel()
 
     Column {
         Spacer(
@@ -86,8 +91,9 @@ fun SignInScreen(navController: NavController) {
         )
         ButtonComponent(buttonClick = {
             isLoading = true
-            signInWithEmailAndPassword(email, password) { isSuccess ->
+            signInWithEmailAndPassword(email, password) { isSuccess, user ->
                 if (isSuccess) {
+                    userViewModel.setUser(user)
                     navController.navigate(DashBoard.route)
                 } else {
                     println("Authentication failed")
@@ -105,14 +111,16 @@ fun SignInScreen(navController: NavController) {
     }
 }
 
-fun signInWithEmailAndPassword(email: String, password: String, onComplete: (Boolean) -> Unit) {
+fun signInWithEmailAndPassword(email: String, password: String, onComplete: (Boolean, user: FirebaseUser) -> Unit) {
     Firebase.auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                onComplete(true)
+                val user = Firebase.auth.currentUser
+                if (user != null) {
+                    onComplete(true, user)
+                }
             } else {
                 Log.w(TAG, "signInWithEmail:failure", task.exception)
-                onComplete(false)
             }
         }
 }

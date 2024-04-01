@@ -1,5 +1,6 @@
 package com.remotejobs.android.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,15 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
 import com.remotejobs.android.ui.navigation.DashBoard
-import com.remotejobs.android.ui.navigation.Jobs
+import com.remotejobs.android.viewmodel.UserViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController) {
@@ -42,6 +45,8 @@ fun SignUpScreen(navController: NavController) {
     var isLoading by remember {
         mutableStateOf(false)
     }
+
+    val userViewModel: UserViewModel = viewModel()
 
 
     Column {
@@ -92,8 +97,9 @@ fun SignUpScreen(navController: NavController) {
         )
         ButtonComponent(buttonClick = {
             isLoading = true
-            createUserWithEmailPassword(email, password) { isSuccess ->
+            createUserWithEmailPassword(email, password) { isSuccess, user ->
                 if (isSuccess) {
+                    userViewModel.setUser(user)
                     navController.navigate(DashBoard.route)
                 } else {
                     println("Authentication failed")
@@ -114,7 +120,7 @@ fun SignUpScreen(navController: NavController) {
 private lateinit var auth: FirebaseAuth
 
 
-fun createUserWithEmailPassword(email: String, password: String, onComplete: (Boolean) -> Unit) {
+fun createUserWithEmailPassword(email: String, password: String, onComplete: (Boolean,FirebaseUser) -> Unit) {
 
     auth = Firebase.auth
 
@@ -122,9 +128,11 @@ fun createUserWithEmailPassword(email: String, password: String, onComplete: (Bo
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
-                onComplete(true)
+                if (user != null) {
+                    onComplete(true, user)
+                }
             } else {
-                onComplete(false)
+                Log.d("error", task.exception.toString())
             }
         }
 }

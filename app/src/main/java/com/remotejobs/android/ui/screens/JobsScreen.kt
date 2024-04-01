@@ -1,5 +1,6 @@
 package com.remotejobs.android.ui.screens
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,19 +35,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.google.firebase.auth.FirebaseUser
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
 import com.remotejobs.android.ui.components.SortBottomSheet
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
 import com.remotejobs.android.viewmodel.JobViewModel
+import com.remotejobs.android.viewmodel.UserViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobsScreen(navController: NavController, user: FirebaseUser?) {
+fun JobsScreen(userViewModel: UserViewModel) {
 
     val viewModel: JobViewModel = viewModel()
 
@@ -70,67 +77,83 @@ fun JobsScreen(navController: NavController, user: FirebaseUser?) {
         }
     }
 
-    Column(Modifier.padding(5.dp)) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Remote Jobs") },
+                actions = {
+                    IconButton(onClick = {
 
-        TopAppBarWithTextAndImage(title = stringResource(R.string.remote_jobs), icon = R.drawable.notifications)
+                    }) {
+                        Icon(Icons.Filled.Notifications, contentDescription = "Refresh")
+                    }
+                }
+            )
+        },
+        contentColor = MaterialTheme.colorScheme.surface
+    ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Column(Modifier.padding(5.dp)) {
 
-        TextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = LocalContentColor.current
-                )
-            },
-            placeholder = { Text(stringResource(R.string.search_for_job_title_companies)) },
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.height(70.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            TextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        tint = LocalContentColor.current
+                    )
+                },
+                placeholder = { Text(stringResource(R.string.search_for_job_title_companies)) },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Text(
-            text = stringResource(R.string.filter_by_category),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(R.string.filter_by_category),
+                fontSize = 20.sp,
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
 
-        FilterComponent(
-            onFilterClick = {
-                isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
-            },
-            onExperienceFilter = {
-                                 selectedExperience = it
-            },
-            onLocationFilter = {
-                               selectedLocation = it
-            },
-            onSalaryFilter = {
-                selectedSalary = it
+            FilterComponent(
+                onFilterClick = {
+                    isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
+                },
+                onExperienceFilter = {
+                    selectedExperience = it
+                },
+                onLocationFilter = {
+                    selectedLocation = it
+                },
+                onSalaryFilter = {
+                    selectedSalary = it
+                }
+            )
+
+            if (isFilterSortBottomSheetExpanded) {
+                SortBottomSheet {
+                    isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
+                }
             }
-        )
 
-        if (isFilterSortBottomSheetExpanded) {
-            SortBottomSheet {
-                isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
-            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            JobCardList(filteredJobs, userViewModel)
         }
 
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        JobCardList(filteredJobs, navController, user)
     }
 
 }
