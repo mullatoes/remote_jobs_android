@@ -63,7 +63,7 @@ fun ProfileScreen(
             if (user != null){
                 UserInfo(user = userViewModel.user.value)
                 Spacer(modifier = Modifier.weight(1f))
-                LogoutButton(viewModel = viewModel, navController)
+                LogoutButton(userViewModel,navController)
             }else{
                 UserNotSignedIn(navController = navController)
             }
@@ -170,10 +170,13 @@ fun ProfileAppBar(title: String, icon: Int, onBackClicked: () -> Unit) {
 }
 
 @Composable
-fun LogoutButton(viewModel: ProfileViewModel, navController: NavController) {
+fun LogoutButton(
+    userViewModel: UserViewModel,
+    navController: NavController
+) {
     Button(
         onClick = {
-            viewModel.logout()
+            userViewModel.logOut()
             navController.navigate(SignIn.route){
                 popUpTo(SignIn.route){
                     inclusive = true

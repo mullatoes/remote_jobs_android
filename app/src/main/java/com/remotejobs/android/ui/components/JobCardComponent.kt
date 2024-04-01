@@ -63,8 +63,10 @@ fun JobCardComponent(
     var bookmarkImageResource by remember { mutableStateOf(R.drawable.bookmark) }
 
 
-    viewModel.checkIfJobIsBookmarked(job.jobId, user?.uid ?: "") { isBookmarked ->
-        bookmarkImageResource = if (isBookmarked) R.drawable.bookmark_black else R.drawable.bookmark
+    if (user != null){
+        viewModel.checkIfJobIsBookmarked(job.jobId, user.uid) { isBookmarked ->
+            bookmarkImageResource = if (isBookmarked) R.drawable.bookmark_black else R.drawable.bookmark
+        }
     }
 
 

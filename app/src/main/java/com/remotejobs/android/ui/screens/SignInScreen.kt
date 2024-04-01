@@ -2,6 +2,7 @@ package com.remotejobs.android.ui.screens
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +30,7 @@ import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
 import com.remotejobs.android.ui.navigation.DashBoard
+import com.remotejobs.android.ui.navigation.SignUp
 import com.remotejobs.android.viewmodel.UserViewModel
 
 @Composable
@@ -105,6 +107,15 @@ fun SignInScreen(navController: NavController) {
                 isLoading = false
             }
         }, text = "Sign In")
+
+        Text(text = "New user? Sign Up", modifier =
+        Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clickable {
+                navController.navigate(SignUp.route)
+            }
+        )
 
         if (isLoading) {
             CircularProgressIndicator(

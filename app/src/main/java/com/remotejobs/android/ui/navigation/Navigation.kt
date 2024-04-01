@@ -38,7 +38,7 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = if(user != null) DashBoard.route else SignIn.route
+        startDestination =  DashBoard.route
     ) {
         composable(DashBoard.route) {
             BottomNavBar(navController = navController,profileViewModel, jobViewModel,userViewModel)
