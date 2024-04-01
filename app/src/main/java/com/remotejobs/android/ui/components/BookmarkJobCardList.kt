@@ -37,18 +37,14 @@ fun BookmarkJobCardList(jobs: List<Job>, navController: NavController, user: Fir
         }
     }else {
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
+        LazyColumn{
             items(jobs) { job ->
-                Spacer(modifier = Modifier.height(8.dp))
                 BookmarkedJobCard(
                     viewModel = JobViewModel(),
                     job,
                     user
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Divider(color = Color.Black, thickness = 0.5.dp)
+                Divider()
             }
         }
     }

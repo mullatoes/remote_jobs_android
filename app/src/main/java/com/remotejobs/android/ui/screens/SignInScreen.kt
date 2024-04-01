@@ -94,7 +94,11 @@ fun SignInScreen(navController: NavController) {
             signInWithEmailAndPassword(email, password) { isSuccess, user ->
                 if (isSuccess) {
                     userViewModel.setUser(user)
-                    navController.navigate(DashBoard.route)
+                    navController.navigate(DashBoard.route){
+                        popUpTo(DashBoard.route){
+                            inclusive = true
+                        }
+                    }
                 } else {
                     println("Authentication failed")
                 }

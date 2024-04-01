@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,75 +45,85 @@ fun BookmarkedJobCard(
     val timeAgo = job.timePosted?.let { getTimeAgo(it) }
     var isJobDetailsExpanded by remember { mutableStateOf(false) }
 
-    Row(
+    Card(
         modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
     ) {
         Row(
-            verticalAlignment = Alignment.Top
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                verticalAlignment = Alignment.Top
             ) {
-                AsyncImage(
-                    model = job.companyLogo,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(70.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                )
-                Spacer(
-                    Modifier
-                        .height(16.dp)
-                )
-                OutlinedButton(onClick = { }) {
-                    Text(job.type)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AsyncImage(
+                        model = job.companyLogo,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    )
+                    Spacer(
+                        Modifier
+                            .height(16.dp)
+                    )
+                    OutlinedButton(onClick = { }) {
+                        Text(job.type)
+                    }
+                }
+
+                Spacer(Modifier.size(16.dp))
+
+                Column {
+                    Text(
+                        text = job.title,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(
+                        Modifier
+                            .height(10.dp)
+                    )
+                    Text(
+                        text = job.company,
+                        fontSize = 8.sp
+                    )
                 }
             }
 
-            Spacer(Modifier.size(16.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = {
+                    isJobDetailsExpanded = !isJobDetailsExpanded
 
-            Column {
-                Text(
-                    text = job.title,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                }) {
+                    Text(text = if (isJobDetailsExpanded) "Close" else "View")
+                }
                 Spacer(
                     Modifier
-                        .height(10.dp)
+                        .height(20.dp)
                 )
-                Text(
-                    text = job.company,
-                    fontSize = 8.sp
-                )
+                if (timeAgo != null) {
+                    Text(
+                        text = timeAgo, fontSize = 10.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+
             }
         }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = {
-                isJobDetailsExpanded = !isJobDetailsExpanded
-
-            }) {
-                Text(text = if (isJobDetailsExpanded) "Close" else "View")
-            }
-            Spacer(
-                Modifier
-                    .height(20.dp)
-            )
-            if (timeAgo != null) {
-                Text(
-                    text = timeAgo, fontSize = 10.sp,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-
-        }
     }
 
     if (isJobDetailsExpanded) {

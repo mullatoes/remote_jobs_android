@@ -2,6 +2,7 @@ package com.remotejobs.android.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
@@ -22,9 +24,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -42,10 +46,10 @@ fun ProfileScreen(
     viewModel: ProfileViewModel,
     userViewModel: UserViewModel) {
 
-    val user = userViewModel.user
+    val user = userViewModel.user.value
 
 
-        Column(
+    Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)
@@ -56,10 +60,15 @@ fun ProfileScreen(
                 navController.popBackStack()
             }
             Spacer(modifier = Modifier.height(16.dp))
-            UserInfo(user = userViewModel.user.value)
-            Spacer(modifier = Modifier.weight(1f))
-            LogoutButton(viewModel = viewModel, navController)
-        }
+            if (user != null){
+                UserInfo(user = userViewModel.user.value)
+                Spacer(modifier = Modifier.weight(1f))
+                LogoutButton(viewModel = viewModel, navController)
+            }else{
+                UserNotSignedIn(navController = navController)
+            }
+           
+    }
 
 }
 
@@ -126,14 +135,14 @@ fun UserCard(user: FirebaseUser?) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Email: ${user?.email ?: "Not Provided"}")
             }
-            // Add similar rows for other user information with relevant icons
+           
         }
     }
 }
 
 @Composable
 fun NotificationsCard() {
-    // Placeholder for notifications card
+   
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(
@@ -146,7 +155,7 @@ fun NotificationsCard() {
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            // Add notifications content here
+            
         }
     }
 }
@@ -165,7 +174,11 @@ fun LogoutButton(viewModel: ProfileViewModel, navController: NavController) {
     Button(
         onClick = {
             viewModel.logout()
-            navController.navigate(SignIn.route)
+            navController.navigate(SignIn.route){
+                popUpTo(SignIn.route){
+                    inclusive = true
+                }
+            }
                   },
         modifier = Modifier
             .fillMaxWidth()
@@ -173,5 +186,46 @@ fun LogoutButton(viewModel: ProfileViewModel, navController: NavController) {
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
     ) {
         Text(text = "Logout", color = Color.White)
+    }
+}
+
+@Composable
+fun UserNotSignedIn(navController: NavController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+           
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = null,
+                modifier = Modifier.size(120.dp),
+                tint = MaterialTheme.colorScheme.primary 
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "Log into existing account",
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Button(
+                onClick = {
+                    navController.navigate(SignIn.route)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Login")
+            }
+        }
     }
 }

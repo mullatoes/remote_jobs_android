@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +41,7 @@ import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
 import com.remotejobs.android.ui.components.SortBottomSheet
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
+import com.remotejobs.android.util.fontFamily
 import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.UserViewModel
 
@@ -80,7 +82,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Remote Jobs") },
+                title = { Text("Remote Jobs", textAlign = TextAlign.Center) },
                 actions = {
                     IconButton(onClick = {
 
@@ -120,7 +122,8 @@ fun JobsScreen(userViewModel: UserViewModel) {
             Text(
                 text = stringResource(R.string.filter_by_category),
                 fontSize = 20.sp,
-                color = Color.White,
+                fontFamily = fontFamily,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth()
             )
 
