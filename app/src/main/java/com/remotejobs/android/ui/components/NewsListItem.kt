@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.remotejobs.android.model.NewsItem
 
@@ -25,7 +26,10 @@ fun NewsListItem(newsItem: NewsItem) {
         ),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = newsItem.title, style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = newsItem.title,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = newsItem.message)
         }
