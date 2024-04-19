@@ -56,9 +56,9 @@ fun ProfileScreen(
         ) {
 
 
-            ProfileAppBar(title = "Profile", icon = R.drawable.backarrow) {
-                navController.popBackStack()
-            }
+//            ProfileAppBar(title = "Profile", icon = R.drawable.backarrow) {
+//                navController.popBackStack()
+//            }
             Spacer(modifier = Modifier.height(16.dp))
             if (user != null){
                 UserInfo(user = userViewModel.user.value)
@@ -207,7 +207,7 @@ fun UserNotSignedIn(navController: NavController) {
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = null,
-                modifier = Modifier.size(120.dp),
+                modifier = Modifier.size(80.dp),
                 tint = MaterialTheme.colorScheme.primary 
             )
 
