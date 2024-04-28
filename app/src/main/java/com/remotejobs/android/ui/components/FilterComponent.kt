@@ -74,10 +74,6 @@ fun FilterComponent(
             }
 
             item {
-                FilterOption("Sort By") { }
-            }
-
-            item {
                 FilterOption("Location") {
                     isLocationExpanded = !isLocationExpanded
                 }

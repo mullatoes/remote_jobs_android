@@ -1,8 +1,11 @@
 package com.remotejobs.android.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,17 +33,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
 import com.remotejobs.android.ui.components.SortBottomSheet
 import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
+import com.remotejobs.android.util.AdMobUtil.getAdViewForBannerAd
 import com.remotejobs.android.util.fontFamily
 import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.UserViewModel
@@ -50,6 +59,10 @@ import com.remotejobs.android.viewmodel.UserViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun JobsScreen(userViewModel: UserViewModel) {
+
+    val context = LocalContext.current
+
+    val adView = getAdViewForBannerAd(context,"ca-app-pub-3940256099942544/9214589741")
 
     val viewModel: JobViewModel = viewModel()
 
@@ -98,6 +111,17 @@ fun JobsScreen(userViewModel: UserViewModel) {
         Column(Modifier.padding(5.dp)) {
 
             Spacer(modifier = Modifier.height(70.dp))
+
+            Box(Modifier.fillMaxWidth()) {
+                AndroidView(factory = { adView }) { view ->
+                    view.layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             TextField(
                 value = searchQuery,
@@ -159,4 +183,16 @@ fun JobsScreen(userViewModel: UserViewModel) {
 
     }
 
+}
+
+@Composable
+private fun getBannerAdView(context: Context): AdView {
+    val adView = remember {
+        AdView(context).apply {
+            adUnitId = ""
+            setAdSize(AdSize.BANNER)
+            loadAd(AdRequest.Builder().build())
+        }
+    }
+    return adView
 }

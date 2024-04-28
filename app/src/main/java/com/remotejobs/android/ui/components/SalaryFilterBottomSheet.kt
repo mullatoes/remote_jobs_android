@@ -48,13 +48,13 @@ fun SalaryFilterBottomSheet(
             Spacer(modifier = Modifier.height(20.dp))
 
             SalaryOption("Below $50,000", selectedSalaryOption == "Below $50,000") {
-                selectedSalaryOption = "100"
+                selectedSalaryOption = "49999"
             }
             SalaryOption("$50,000 - $100,000", selectedSalaryOption == "$50,000 - $100,000") {
-                selectedSalaryOption = "50000"
+                selectedSalaryOption = "99999"
             }
             SalaryOption("Above $100,000", selectedSalaryOption == "Above $100,000") {
-                selectedSalaryOption = "100000"
+                selectedSalaryOption = "100001"
             }
 
             Spacer(modifier = Modifier.height(20.dp))

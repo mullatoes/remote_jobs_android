@@ -87,18 +87,14 @@ dependencies {
     val compose_version = "2.6.2"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
-
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
-
     implementation("androidx.compose.material:material-icons-extended:1.6.3")
-
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
 
-
-
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
+    //admob
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
 
 
 }

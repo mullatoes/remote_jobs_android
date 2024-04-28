@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.remotejobs.android.R
+import com.remotejobs.android.util.AdMobUtil
 import com.remotejobs.android.util.showMessage
 
 import com.remotejobs.android.viewmodel.JobViewModel
@@ -374,6 +375,8 @@ fun BottomSheetItem(
 
         Button(
             onClick = {
+
+                AdMobUtil.showInterstitialAd(context,"ca-app-pub-3940256099942544/1033173712")
 
                 val submitUrl = job.submitUrl
                 showApplicationDialog(context,submitUrl){
