@@ -2,6 +2,7 @@ package com.remotejobs.android.ui.components
 
 import Job
 import android.os.Build
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,8 +23,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +40,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
+import com.google.android.gms.ads.AdView
 import com.remotejobs.android.R
 import com.remotejobs.android.util.showMessage
 import com.remotejobs.android.viewmodel.JobViewModel
@@ -228,7 +229,8 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel) {
+fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel, adView: AdView) {
+    var adCounter = 0
     if (jobs.isEmpty()){
 
         Box(
@@ -249,6 +251,18 @@ fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel) {
                     userViewModel
                 )
                 Divider()
+                adCounter++
+
+                if (adCounter % 10 == 0 && jobs.lastIndex >= adCounter) {
+                    Box(Modifier.fillMaxWidth()) {
+                        AndroidView(factory = { adView }) { view ->
+                            view.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        }
+                    }
+                }
             }
         }
     }

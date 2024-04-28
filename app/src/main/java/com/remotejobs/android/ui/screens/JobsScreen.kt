@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +46,6 @@ import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
 import com.remotejobs.android.ui.components.SortBottomSheet
-import com.remotejobs.android.ui.components.TopAppBarWithTextAndImage
 import com.remotejobs.android.util.AdMobUtil.getAdViewForBannerAd
 import com.remotejobs.android.util.fontFamily
 import com.remotejobs.android.viewmodel.JobViewModel
@@ -178,7 +175,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            JobCardList(filteredJobs, userViewModel)
+            JobCardList(filteredJobs, userViewModel, adView)
         }
 
     }
