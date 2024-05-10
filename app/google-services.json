@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "565415280804",
-    "project_id": "remote-jobs-9c0da",
-    "storage_bucket": "remote-jobs-9c0da.appspot.com"
+    "project_number": "935145015251",
+    "project_id": "behired-60f7f",
+    "storage_bucket": "behired-60f7f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:565415280804:android:732fe80635433d99abe631",
+        "mobilesdk_app_id": "1:935145015251:android:b6cb7c6fd10bb7e3345126",
         "android_client_info": {
           "package_name": "com.remotejobs.android"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDcKIGnU8oihbU3lCMLejdxZTHrfMUVpxw"
+          "current_key": "AIzaSyDPfRChdRCDx3ntutGDqbdd96JL2ayy4wk"
         }
       ],
       "services": {

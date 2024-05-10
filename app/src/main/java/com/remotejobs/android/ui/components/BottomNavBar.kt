@@ -105,7 +105,7 @@ fun BottomNavBar(
 
                 }
 
-                Box(
+               /* Box(
                     modifier = Modifier
                         .weight(1f)
                         .padding(16.dp),
@@ -121,7 +121,7 @@ fun BottomNavBar(
                     }) {
                         Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
                     }
-                }
+                }*/
 
                 /*Third Item*/
 

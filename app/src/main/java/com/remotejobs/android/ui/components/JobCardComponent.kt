@@ -239,7 +239,7 @@ fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel, adView: AdView) {
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("Sorry, no jobs for that category \nTry home section for more jobs", color = Color.Gray)
+            Text("Sorry, no jobs available \nTry home section for all jobs", color = Color.Gray)
         }
     }else {
 
