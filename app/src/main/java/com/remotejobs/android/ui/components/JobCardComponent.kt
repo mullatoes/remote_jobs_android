@@ -2,9 +2,7 @@ package com.remotejobs.android.ui.components
 
 import Job
 import android.os.Build
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,11 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,7 +39,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.google.android.gms.ads.AdView
 import com.remotejobs.android.R
@@ -55,7 +53,8 @@ import java.time.temporal.ChronoUnit
 fun JobCardComponent(
     viewModel: JobViewModel,
     job: Job,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+
 ) {
     val user = userViewModel.user.value
     val timeAgo = job.timePosted?.let { getTimeAgo(it) }
@@ -78,113 +77,111 @@ fun JobCardComponent(
         .size(20.dp)
         .clickable {
 
-            if (user != null) {
-                user.uid.let {
-                    viewModel.toggleBookmark(job.jobId, it)
-                }
-            } else {
-                showMessage(
-                    context,
-                    "Please login or create an account to bookmark a job post"
-                )
-            }
         }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .clickable {
+                isJobDetailsExpanded = !isJobDetailsExpanded
+                viewModel.incrementViews(job.jobId)
+            }
+            .padding(vertical = 6.dp, horizontal = 6.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
+        shape = RoundedCornerShape(12.dp)
     ) {
-
-
-        Row(
+        Column(
             modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Row(
-                verticalAlignment = Alignment.Top
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    AsyncImage(
-                        model = job.companyLogo,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(70.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                    )
-                    Spacer(
-                        Modifier
-                            .height(16.dp)
-                    )
-                    OutlinedButton(onClick = { }) {
-                        Text(job.type)
-                    }
-                }
-
-                Spacer(Modifier.size(16.dp))
-
-                Column {
                     Text(
                         text = job.title,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
                     )
-                    Spacer(
-                        Modifier
-                            .height(10.dp)
-                    )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = job.company,
-                        fontSize = 8.sp
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+                AsyncImage(
+                    model = job.companyLogo,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text("${job.type} - ${job.availability}",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.secondary)
+                IconButton(
+                    onClick = {
+                        if (user != null) {
+                            user.uid.let {
+                                viewModel.toggleBookmark(job.jobId, it)
+                            }
+                            showMessage(
+                                context,
+                                "${job.title} added to bookmarks"
+                            )
+                        } else {
+                            showMessage(
+                                context,
+                                "Please login or create an account to bookmark a job post"
+                            )
+                        }
+                    },
+                    modifier = bookmarkImageModifier
+                ) {
+                    Icon(
+                        painter = painterResource(id = bookmarkImageResource),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Button(onClick = {
-                    isJobDetailsExpanded = !isJobDetailsExpanded
-                    viewModel.incrementViews(job.jobId)
+            Spacer(modifier = Modifier.height(16.dp))
 
-                }) {
-                    Text(text = if (isJobDetailsExpanded) "Close" else "View")
-                }
-                Spacer(
-                    Modifier
-                        .height(20.dp)
+            if (timeAgo != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = timeAgo,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
-                if (timeAgo != null) {
-                    Text(
-                        text = timeAgo, fontSize = 10.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-                }
-
-                Spacer(
-                    Modifier
-                        .height(20.dp)
-                )
-                Image(
-                    painter =
-                    painterResource(
-                        id = bookmarkImageResource
-                    ),
-
-                    contentDescription = null,
-                    modifier = bookmarkImageModifier
-                )
-
             }
         }
     }
+
+
 
     if (isJobDetailsExpanded) {
         JobDetailsBottomSheet(
@@ -253,16 +250,16 @@ fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel, adView: AdView) {
                 Divider()
                 adCounter++
 
-                if (adCounter % 10 == 0 && jobs.lastIndex >= adCounter) {
-                    Box(Modifier.fillMaxWidth()) {
-                        AndroidView(factory = { adView }) { view ->
-                            view.layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
-                        }
-                    }
-                }
+//                if (adCounter % 10 == 0 && jobs.lastIndex >= adCounter) {
+//                    Box(Modifier.fillMaxWidth()) {
+//                        AndroidView(factory = { adView }) { view ->
+//                            view.layoutParams = ViewGroup.LayoutParams(
+//                                ViewGroup.LayoutParams.MATCH_PARENT,
+//                                ViewGroup.LayoutParams.WRAP_CONTENT
+//                            )
+//                        }
+//                    }
+//                }
             }
         }
     }

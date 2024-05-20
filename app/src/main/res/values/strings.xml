@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">remote jobs</string>
+    <string name="app_name">Behired</string>
     <string name="submit_url_not_available">The submission URL is not available.</string>
     <string name="dialog_continue">Continue</string>
     <string name="dialog_message">Let the employer know that you applied or heard about them from here.</string>

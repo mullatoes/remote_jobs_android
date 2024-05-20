@@ -78,6 +78,7 @@ class JobViewModel : ViewModel() {
                     val experienceLevel = document.getString("experienceLevel") ?: ""
                     val duration = document.getString("duration") ?: ""
                     val submitUrl = document.getString("submitUrl") ?: ""
+                    val availability = document.getString("availability") ?: ""
                     val isBookmarked = document.getBoolean("isBookmarked") ?: false
 
                     val datePosted: Date? = timestamp?.toDate()
@@ -109,7 +110,8 @@ class JobViewModel : ViewModel() {
                             experienceLevel,
                             duration,
                             isBookmarked,
-                            submitUrl
+                            submitUrl,
+                            availability
                         )
                     )
                 }

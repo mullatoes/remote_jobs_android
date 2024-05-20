@@ -92,14 +92,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Remote Jobs", textAlign = TextAlign.Center) },
-                actions = {
-                    IconButton(onClick = {
-
-                    }) {
-                        Icon(Icons.Filled.Notifications, contentDescription = "Refresh")
-                    }
-                }
+                title = { Text("Behired: Remote Jobs", textAlign = TextAlign.Center) }
             )
         },
         contentColor = MaterialTheme.colorScheme.surface

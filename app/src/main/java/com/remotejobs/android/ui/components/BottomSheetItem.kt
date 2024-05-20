@@ -89,15 +89,6 @@ fun BottomSheetItem(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = job.company,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(
-                modifier =
-                Modifier.width(10.dp)
-            )
-            Text(
                 text = job.companyCity,
                 fontSize = 15.sp,
 
@@ -145,15 +136,7 @@ fun BottomSheetItem(
                 Modifier.width(5.dp)
             )
             Text(
-                text = "${job.payScaleMin}K - ${job.payScaleMax}K",
-                fontSize = 13.sp,
-            )
-            Spacer(
-                modifier =
-                Modifier.width(5.dp)
-            )
-            Text(
-                text = job.type,
+                text = "$${job.payScaleMin} - $${job.payScaleMax}",
                 fontSize = 13.sp,
             )
             Spacer(
@@ -202,15 +185,7 @@ fun BottomSheetItem(
                 text = "${job.noOfEmployeesLowBound} - ${job.noOfEmployeesHighBound} employees",
                 fontSize = 13.sp,
             )
-            Spacer(
-                modifier =
-                Modifier.width(5.dp)
-            )
-            Text(
-                text = job.companyType,
-                fontSize = 13.sp,
 
-                )
         }
         Spacer(
             modifier =
