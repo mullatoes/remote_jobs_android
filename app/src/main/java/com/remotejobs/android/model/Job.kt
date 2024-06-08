@@ -28,6 +28,7 @@ data class Job(
     val isBookmarked: Boolean = false, // default value provided
     val submitUrl: String = "", // default value provided
     val availability: String = "", // default value provided
+   // val stack: String = "", // default value provided
 ) : Parcelable
 
 //More fields to be added
