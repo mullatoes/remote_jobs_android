@@ -125,7 +125,7 @@ fun BottomNavBar(
 
                 /*Third Item*/
 
-                IconButton(
+               /* IconButton(
                     onClick = {
                         selected.value = Icons.Default.Newspaper
                         navigationController.navigate(Screen.Applications.screen) {
@@ -143,7 +143,7 @@ fun BottomNavBar(
                         tint = if (selected.value == Icons.Default.Newspaper) Color.LightGray else Color.DarkGray
                     )
 
-                }
+                }*/
 
                 /*Fourth Item*/
 
@@ -181,9 +181,9 @@ fun BottomNavBar(
             composable(Screen.Saved.screen) {
                 UserBookmarkedJobsScreen(navController, jobViewModel, userViewModel)
             }
-            composable(Screen.Applications.screen) {
+           /* composable(Screen.Applications.screen) {
                 NewsScreen()
-            }
+            }*/
             composable(Screen.Profile.screen) {
                 ProfileScreen(navController, viewModel, userViewModel)
             }

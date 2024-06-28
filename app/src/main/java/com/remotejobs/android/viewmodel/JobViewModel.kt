@@ -44,6 +44,15 @@ class JobViewModel : ViewModel() {
         }
     }
 
+    fun DocumentSnapshot.getLongSafe(field: String): Long? {
+        val value = this.get(field)
+        return if (value is Number) {
+            value.toLong()
+        } else {
+            null
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchJobs() {
         firestore.collection("jobs")
@@ -64,12 +73,14 @@ class JobViewModel : ViewModel() {
                     val companyLogo = document.getString("companyLogo") ?: ""
                     val timestamp: Timestamp? = document.getTimestamp("timePosted")
                     val skills = document.get("skills") as? ArrayList<String>
-                    val payScaleMin = document.getLong("payScaleMin")?.toInt()
-                    val payScaleMax = document.getLong("payScaleMax")?.toInt()
-                    val views = document.getLong("views")?.toInt()
-                    val applications = document.getLong("applications")?.toInt()
-                    val noOfEmployeesLowBound = document.getLong("noOfEmployeesLowBound")?.toInt()
-                    val noOfEmployeesHighBound = document.getLong("noOfEmployeesHighBound")?.toInt()
+                    val payScaleMin = document.getLongSafe("payScaleMin")?.toInt()
+                    val payScaleMax = document.getLongSafe("payScaleMax")?.toInt()
+                    val views = document.getLongSafe("views")?.toInt()
+                    val applications = document.getLongSafe("applications")?.toInt()
+                    val noOfEmployeesLowBound = document.getLongSafe("noOfEmployeesLowBound")?.toInt()
+
+                    val noOfEmployeesHighBound = document.getLongSafe("noOfEmployeesHighBound")?.toInt()
+
                     val companyType = document.getString("companyType") ?: ""
                     val companyCity = document.getString("companyCity") ?: ""
                     val companyCountry = document.getString("companyCountry") ?: ""

@@ -79,12 +79,6 @@ fun UserInfo(user: FirebaseUser?) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         UserCard(user = user)
-        UserCard(user = user)
-        UserCard(user = user)
-        NotificationsCard()
-        NotificationsCard()
-        NotificationsCard()
-        // Add more cards for other user information if needed
     }
 }
 

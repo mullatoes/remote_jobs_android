@@ -59,7 +59,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
 
     val context = LocalContext.current
 
-    val adView = getAdViewForBannerAd(context,"ca-app-pub-3940256099942544/9214589741")
+    val adView = getAdViewForBannerAd(context,"ca-app-pub-1687235289780065/4288680821")
 
     val viewModel: JobViewModel = viewModel()
 
