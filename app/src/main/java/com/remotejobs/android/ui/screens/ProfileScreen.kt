@@ -111,7 +111,7 @@ fun UserCard(user: FirebaseUser?) {
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = user?.displayName ?: "Not Provided",
+                    text = user?.displayName ?: "Username not provided",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
