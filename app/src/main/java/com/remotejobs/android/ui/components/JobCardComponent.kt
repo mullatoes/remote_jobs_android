@@ -1,7 +1,9 @@
 package com.remotejobs.android.ui.components
 
 import Job
+import android.content.Context
 import android.os.Build
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,9 +41,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.remotejobs.android.R
+import com.remotejobs.android.util.AdMobUtil.getAdViewForBannerAd
 import com.remotejobs.android.util.showMessage
 import com.remotejobs.android.viewmodel.JobViewModel
 import com.remotejobs.android.viewmodel.UserViewModel
@@ -55,7 +62,7 @@ fun JobCardComponent(
     job: Job,
     userViewModel: UserViewModel,
 
-) {
+    ) {
     val user = userViewModel.user.value
     val timeAgo = job.timePosted?.let { getTimeAgo(it) }
     var isJobDetailsExpanded by remember { mutableStateOf(false) }
@@ -63,9 +70,10 @@ fun JobCardComponent(
     var bookmarkImageResource by remember { mutableStateOf(R.drawable.bookmark) }
 
 
-    if (user != null){
+    if (user != null) {
         viewModel.checkIfJobIsBookmarked(job.jobId, user.uid) { isBookmarked ->
-            bookmarkImageResource = if (isBookmarked) R.drawable.bookmark_black else R.drawable.bookmark
+            bookmarkImageResource =
+                if (isBookmarked) R.drawable.bookmark_black else R.drawable.bookmark
         }
     }
 
@@ -137,9 +145,11 @@ fun JobCardComponent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-                Text("${job.type} - ${job.availability}",
+                Text(
+                    "${job.type} - ${job.availability}",
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.secondary)
+                    color = MaterialTheme.colorScheme.secondary
+                )
                 IconButton(
                     onClick = {
                         if (user != null) {
@@ -205,18 +215,22 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
             val hours = difference / 60
             if (hours == 1L) "1 hr ago" else "$hours hrs ago"
         }
+
         difference < 10080 -> {
             val days = difference / 1440
             if (days == 1L) "1 day ago" else "$days days ago"
         }
+
         difference < 43800 -> {
             val weeks = difference / 10080
             if (weeks == 1L) "1 week ago" else "$weeks weeks ago"
         }
+
         difference < 525600 -> {
             val months = difference / 43800
             if (months == 1L) "1 month ago" else "$months months ago"
         }
+
         else -> {
             val years = difference / 525600
             if (years == 1L) "1 year ago" else "$years years ago"
@@ -226,9 +240,10 @@ fun getTimeAgo(timePosted: LocalDateTime): String {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel, adView: AdView) {
-    var adCounter = 0
-    if (jobs.isEmpty()){
+fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel) {
+
+
+    if (jobs.isEmpty()) {
 
         Box(
             modifier = Modifier
@@ -238,29 +253,44 @@ fun JobCardList(jobs: List<Job>, userViewModel: UserViewModel, adView: AdView) {
         ) {
             Text("Sorry, no jobs available \nTry home section for all jobs", color = Color.Gray)
         }
-    }else {
+    } else {
 
-        LazyColumn{
-            items(jobs) { job ->
+        LazyColumn {
+
+            itemsIndexed(jobs) { index, job ->
                 JobCardComponent(
                     viewModel = JobViewModel(),
-                    job,
-                    userViewModel
+                    job = job,
+                    userViewModel = userViewModel
                 )
                 Divider()
-                adCounter++
 
-//                if (adCounter % 10 == 0 && jobs.lastIndex >= adCounter) {
-//                    Box(Modifier.fillMaxWidth()) {
-//                        AndroidView(factory = { adView }) { view ->
-//                            view.layoutParams = ViewGroup.LayoutParams(
-//                                ViewGroup.LayoutParams.MATCH_PARENT,
-//                                ViewGroup.LayoutParams.WRAP_CONTENT
-//                            )
-//                        }
-//                    }
-//                }
+                if ((index + 1) % 7 == 0) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
+                    ) {
+                        val context = LocalContext.current
+                        val adView = getAdViewForBannerAd(
+                            context,
+                            context.getString(R.string.banner_ad_value)
+                        )
+                        AndroidView(factory = { adView }) { adView ->
+                            adView.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                        }
+                    }
+                }
+                Divider(modifier = Modifier.padding(horizontal = 8.dp))
             }
+
         }
     }
 }
+
+
+
+
