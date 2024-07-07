@@ -172,15 +172,3 @@ fun JobsScreen(userViewModel: UserViewModel) {
     }
 
 }
-
-@Composable
-private fun getBannerAdView(context: Context): AdView {
-    val adView = remember {
-        AdView(context).apply {
-            adUnitId = ""
-            setAdSize(AdSize.BANNER)
-            loadAd(AdRequest.Builder().build())
-        }
-    }
-    return adView
-}
