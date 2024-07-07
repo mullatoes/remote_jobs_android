@@ -2,12 +2,10 @@ package com.remotejobs.android.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,7 +57,10 @@ fun FilterComponent(
             }
         }
 
-        LazyRow {
+        LazyRow (
+            horizontalArrangement = Arrangement.spacedBy(30.dp),
+            modifier = Modifier.padding(16.dp)
+        ){
             item {
                 Image(
                     painter = painterResource(id = R.drawable.sort),
@@ -76,17 +77,6 @@ fun FilterComponent(
             item {
                 FilterOption("Location") {
                     isLocationExpanded = !isLocationExpanded
-                }
-            }
-            item {
-                FilterOption("Experience") {
-                    isExperienceSheetExpanded = !isExperienceSheetExpanded
-                }
-            }
-
-            item {
-                FilterOption("Salary") {
-                    isSalaryExpanded = !isSalaryExpanded
                 }
             }
         }
