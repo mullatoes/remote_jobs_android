@@ -1,6 +1,8 @@
 package com.remotejobs.android.ui.screens
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,7 +34,10 @@ import com.remotejobs.android.ui.components.ButtonComponent
 import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.navigation.DashBoard
 import com.remotejobs.android.ui.navigation.SignIn
+import com.remotejobs.android.util.isPasswordStrong
+import com.remotejobs.android.util.showMessage
 import com.remotejobs.android.viewmodel.UserViewModel
+import org.checkerframework.checker.units.qual.Current
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +48,7 @@ fun SignUpScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val userViewModel: UserViewModel = viewModel()
 
@@ -86,7 +93,7 @@ fun SignUpScreen(navController: NavController) {
                 cursorColor = MaterialTheme.colorScheme.primary
             ),
 
-        )
+            )
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -132,8 +139,8 @@ fun SignUpScreen(navController: NavController) {
             if (email.isEmpty() || password.isEmpty()) {
                 errorMessage = "Email and Password cannot be empty"
             } else {
-                isLoading = true
-                createUserWithEmailPassword(email, password) { isSuccess, user ->
+                createUserWithEmailPassword(email, password, context) { isSuccess, user ->
+                    isLoading = true
                     if (isSuccess) {
                         userViewModel.setUser(user)
                         navController.navigate(DashBoard.route) {
@@ -165,15 +172,25 @@ fun SignUpScreen(navController: NavController) {
     }
 }
 
-fun createUserWithEmailPassword(email: String, password: String, onComplete: (Boolean, FirebaseUser?) -> Unit) {
-    Firebase.auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = Firebase.auth.currentUser
-                onComplete(true, user)
-            } else {
-                Log.w("SignUp", "createUserWithEmail:failure", task.exception)
-                onComplete(false, null)
+fun createUserWithEmailPassword(
+    email: String,
+    password: String,
+    context: Context,
+    onComplete: (Boolean, FirebaseUser?) -> Unit
+) {
+    if (!isPasswordStrong(password)) {
+        showMessage(context, "Please create a strong password.")
+    } else {
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = Firebase.auth.currentUser
+                    onComplete(true, user)
+                } else {
+                    Log.w("SignUp", "createUserWithEmail:failure", task.exception)
+                    onComplete(false, null)
+                }
             }
-        }
+    }
+
 }

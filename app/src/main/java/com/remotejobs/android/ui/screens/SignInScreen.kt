@@ -1,6 +1,7 @@
 package com.remotejobs.android.ui.screens
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +34,7 @@ import com.remotejobs.android.ui.components.LoginEmailComponent
 import com.remotejobs.android.ui.components.LoginPasswordComponent
 import com.remotejobs.android.ui.navigation.DashBoard
 import com.remotejobs.android.ui.navigation.SignUp
+import com.remotejobs.android.util.showMessage
 import com.remotejobs.android.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +45,7 @@ fun SignInScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val userViewModel: UserViewModel = viewModel()
 
@@ -111,8 +115,8 @@ fun SignInScreen(navController: NavController) {
                     Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
                 val description = if (passwordVisible) "Hide password" else "Show password"
-                IconButton(onClick = {passwordVisible = !passwordVisible}){
-                    Icon(imageVector  = image, description)
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(imageVector = image, description)
                 }
             }
         )
@@ -142,8 +146,9 @@ fun SignInScreen(navController: NavController) {
             if (email.isEmpty() || password.isEmpty()) {
                 errorMessage = "Email and Password cannot be empty"
             } else {
-                isLoading = true
-                signInWithEmailAndPassword(email, password) { isSuccess, user ->
+
+                signInWithEmailAndPassword(email, password, context) { isSuccess, user ->
+                    isLoading = true
                     if (isSuccess) {
                         userViewModel.setUser(user)
                         navController.navigate(DashBoard.route) {
@@ -175,15 +180,19 @@ fun SignInScreen(navController: NavController) {
     }
 }
 
-fun signInWithEmailAndPassword(email: String, password: String, onComplete: (Boolean, user: FirebaseUser?) -> Unit) {
+fun signInWithEmailAndPassword(
+    email: String,
+    password: String,
+    context: Context,
+    onComplete: (Boolean, user: FirebaseUser?) -> Unit
+) {
     Firebase.auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = Firebase.auth.currentUser
-                onComplete(true, user)
-            } else {
-                Log.w(TAG, "signInWithEmail:failure", task.exception)
-                onComplete(false, null)
-            }
+
+            val user = Firebase.auth.currentUser
+            onComplete(true, user)
+
+        }.addOnFailureListener {
+            showMessage(context, "Sign in Failed. ${it.message}")
         }
 }
