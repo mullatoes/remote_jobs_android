@@ -5,16 +5,21 @@ import android.content.Context
 import android.os.Build
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,6 +49,7 @@ import com.google.android.gms.ads.AdView
 import com.remotejobs.android.R
 import com.remotejobs.android.ui.components.FilterComponent
 import com.remotejobs.android.ui.components.JobCardList
+import com.remotejobs.android.ui.components.LocationFilterBottomSheet
 import com.remotejobs.android.ui.components.SortBottomSheet
 import com.remotejobs.android.util.AdMobUtil.getAdViewForBannerAd
 import com.remotejobs.android.util.fontFamily
@@ -65,6 +72,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
     val allJobs = jobs.toMutableList()
 
     var searchQuery by remember { mutableStateOf("") }
+    var isLocationExpanded by remember { mutableStateOf(false) }
 
 
     var isFilterSortBottomSheetExpanded by remember { mutableStateOf(false) }
@@ -90,7 +98,19 @@ fun JobsScreen(userViewModel: UserViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Behired: Remote Jobs", textAlign = TextAlign.Center) }
+                title = { Text("Remote Jobs Worldwide", textAlign = TextAlign.Center) },
+                actions = {
+                    Image(
+                        painter = painterResource(id = R.drawable.sort),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(45.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .clickable {
+                                isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
+                            }
+                    )
+                }
             )
         },
         contentColor = MaterialTheme.colorScheme.surface
@@ -109,7 +129,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             TextField(
                 value = searchQuery,
@@ -129,33 +149,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = stringResource(R.string.filter_by_category),
-                fontSize = 20.sp,
-                fontFamily = fontFamily,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-
-            FilterComponent(
-                onFilterClick = {
-                    isFilterSortBottomSheetExpanded = !isFilterSortBottomSheetExpanded
-                },
-                onExperienceFilter = {
-                    selectedExperience = it
-                },
-                onLocationFilter = {
-                    selectedLocation = it
-                },
-                onSalaryFilter = {
-                    selectedSalary = it
-                }
-            )
+            Spacer(modifier = Modifier.height(3.dp))
 
             if (isFilterSortBottomSheetExpanded) {
                 SortBottomSheet {
@@ -164,7 +158,7 @@ fun JobsScreen(userViewModel: UserViewModel) {
             }
 
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             JobCardList(filteredJobs, userViewModel)
         }
@@ -172,3 +166,4 @@ fun JobsScreen(userViewModel: UserViewModel) {
     }
 
 }
+
